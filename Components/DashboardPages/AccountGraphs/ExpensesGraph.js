@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button } from 'react-native'
 
 export default class Dashboard extends Component {
     static navigationOptions = {
-        title: 'Dashboard',
+        title:'Expenses',
       };
     render() {
         return (

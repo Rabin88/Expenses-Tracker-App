@@ -18,6 +18,7 @@ import Dashboard from './Components/Homepage/Dashboard';
 import Accounts from './Components/DashboardPages/Account/Accounts';
 import ExpensesGraph from './Components/DashboardPages/AccountGraphs/ExpensesGraph';
 import SetGoals from './Components/DashboardPages/SetBudgets/SetGoals';
+import CategoriesScreen from './Components/DashboardPages/Categorise/CategoriseScreen'
 
 export default class App extends Component {
   render() {
@@ -29,30 +30,44 @@ export default class App extends Component {
 const BottomTab = createBottomTabNavigator(
   {
     bottomHome: Dashboard,
-    bottomAccount : Accounts,
+    GraphPage: ExpensesGraph,
+    accountPage: Accounts,
+
+    // Home: Dashboard,
+    // GraphsPage: ExpensesGraph,
+     //AccountsPage: Accounts,
+    
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
+      // tabBarVisible: navigation.state.routeName == "loginPage" ? false : true,
       tabBarIcon: ( {focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        if (routeName === 'bottomHome') {
-          return (
-            <View>
-              <Text> Dashboard</Text>
-          </View> )
+        icon = <Icon name= "home" size={25} />
+        switch(routeName){
+          case "bottomHome":
+            icon = <Icon name="home" size={25} color={tintColor} />
+            break;
             
-        } else {
-          return (
-            <View>
-            <Text> Account</Text>
-          </View>)
+            case "GraphPage":
+            icon = <Icon name="line-chart" size={25} color={tintColor} />
+            break;
+            
+            case "accountPage":
+            icon = <Icon name="gear" size={25} color={tintColor} />
+            break;
         }
+
+        return icon;
+
       },
     }),
     tabBarOptions: {
-      activeTintColor: '#FF6F00',
+      //activeTintColor: '#FF6F00',
+      activeTintColor: '#0652DD',
       inactiveTintColor: '#263238',
-      showIcon : true
+      //showLabel: false
+
     },
   }
 );
@@ -63,10 +78,17 @@ const RootStack = createStackNavigator (
     AccountsPage: Accounts,
     GraphsPage : ExpensesGraph,
     SetBudgetPage : SetGoals,
-    bottomHome : BottomTab,
+    CategoriesPage: CategoriesScreen,
+    Tabs: {
+      screen: BottomTab
+    }
   },
   {
     initialRouteName: 'LoginPage',
   }
 );
+
+
 const AppContainer = createAppContainer(RootStack);
+
+// const AppContainer = createAppContainer(BottomTab);

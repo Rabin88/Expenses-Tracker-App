@@ -22,7 +22,7 @@ export default class Login extends Component {
     loginCheck (){
         const { username, password} =this.state
         if(username == 'Username' && password == 'password'){
-            this.props.navigation.navigate('Home')
+            this.props.navigation.navigate('bottomHome')
         } else {
             alert('Username/Password mismatch')
             
