@@ -12,13 +12,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { createStackNavigator, 
         createAppContainer, 
         createBottomTabNavigator } from 'react-navigation';
-import Login from './Components/Login/Login';
-import Signup from './Components/Signup/Signup';
-import Dashboard from './Components/Homepage/Dashboard';
-import Accounts from './Components/DashboardPages/Account/Accounts';
-import ExpensesGraph from './Components/DashboardPages/AccountGraphs/ExpensesGraph';
-import SetGoals from './Components/DashboardPages/SetBudgets/SetGoals';
-import CategoriesScreen from './Components/DashboardPages/Categorise/CategoriseScreen'
+import Login from './AppComponents/Login/Login';
+import Signup from './AppComponents/Signup/Signup';
+import Dashboard from './AppComponents/Homepage/Dashboard';
+import Accounts from './AppComponents/DashboardPages/Account/Accounts';
+import ExpensesGraph from './AppComponents/DashboardPages/AccountGraphs/ExpensesGraph';
+import SetGoals from './AppComponents/DashboardPages/SetBudgets/SetGoals';
+import CategoriesScreen from './AppComponents/DashboardPages/Categorise/CategoriseScreen'
 
 export default class App extends Component {
   render() {
@@ -30,12 +30,8 @@ export default class App extends Component {
 const BottomTab = createBottomTabNavigator(
   {
     bottomHome: Dashboard,
-    GraphPage: ExpensesGraph,
-    accountPage: Accounts,
-
-    // Home: Dashboard,
-    // GraphsPage: ExpensesGraph,
-     //AccountsPage: Accounts,
+    GraphsPage: ExpensesGraph,
+    AccountsPage: Accounts,
     
   },
   {
@@ -49,11 +45,11 @@ const BottomTab = createBottomTabNavigator(
             icon = <Icon name="home" size={25} color={tintColor} />
             break;
             
-            case "GraphPage":
+            case "GraphsPage":
             icon = <Icon name="line-chart" size={25} color={tintColor} />
             break;
             
-            case "accountPage":
+            case "AccountsPage":
             icon = <Icon name="gear" size={25} color={tintColor} />
             break;
         }
@@ -74,13 +70,13 @@ const BottomTab = createBottomTabNavigator(
 const RootStack = createStackNavigator (
   {LoginPage :  Login,
     SignupPage : Signup,
-    Home: Dashboard, 
-    AccountsPage: Accounts,
-    GraphsPage : ExpensesGraph,
+    //Home: Dashboard, 
+    //AccountsPage: Accounts,
+    //GraphsPage : ExpensesGraph,
     SetBudgetPage : SetGoals,
     CategoriesPage: CategoriesScreen,
     Tabs: {
-      screen: BottomTab
+      screen: BottomTab,
     }
   },
   {

@@ -9,24 +9,58 @@ import {
     KeyboardAvoidingView,
     TextInput,
     ScrollView,
-    TouchableOpacity 
+	TouchableOpacity,
+	AsyncStorage
     } from 'react-native';
 
 export default class Login extends Component {
     static navigationOptions = {
         title: 'Login',
       };
-        state ={ username:"", 
-            password:""}
+      constructor(props) {
+        super(props);
+        this.state ={ username:"", 
+            password:""
+        
+        }
+    }
 
     loginCheck (){
-        const { username, password} =this.state
-        if(username == 'Username' && password == 'password'){
-            this.props.navigation.navigate('bottomHome')
-        } else {
-            alert('Username/Password mismatch')
-            
+		const uname = this.state.username;
+		const pwd = this.state.password;
+
+		if(uname == '' || pwd == ''){
+			alert('Username/Password mismatch')
+			return;
         }
+
+        fetch('http://localhost:3000/api/login', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+				user_name: uname,
+				user_password : pwd
+            })
+        })
+        .then (async (result) => {
+            let resJson = await result.json();
+			console.log(resJson);
+
+			if(!resJson.token){
+				alert('Username/Password invalid!')
+				return;
+			}
+
+			await AsyncStorage.setItem('token', resJson.token);
+			this.props.navigation.navigate('bottomHome');
+        })
+        .catch(error => {
+            console.log(error);
+        });
+     
     }
     render () {
         return (

@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 
-export default class Dashboard extends Component {
+export default class accounts extends Component {
     static navigationOptions = {
-        title: 'Set Budgets',
+        title: 'Accounts',
       };
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}> Welcome to Set Goals Page </Text>
+                <Text style={styles.welcome}> Welcome to AccountPage </Text>
         
             </View>
         )
