@@ -18,15 +18,14 @@ export default class Signup extends Component {
         event.preventDefault();
         console.log('handle sign up submit');
 
-    
-        if(this.state.Password.length < 7){
-            alert('minimum password length must be 7');
-            return;
-        }
         if(this.state.Password !== this.state.RetypePassword){
             alert('password does not match');
             return;
         }
+        // if(this.state.Password.length < 7){
+        //     alert('minimum password length must be 7');
+        //     return;
+        // }
 
         let data ={
             "Username": this.state.username,
@@ -36,8 +35,8 @@ export default class Signup extends Component {
             "Email": this.state.Email
         };
         console.log(data);
-        
-        fetch('http://localhost:3000/signup', {
+        // Client Send the reequest to Server localhost:3000 as a JSON object
+        fetch('http://localhost:3000/api/signup', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -45,6 +44,7 @@ export default class Signup extends Component {
             },
             body: JSON.stringify(data)
         })
+         // Client get the response from Server, upon successful the user account will be created and navigate back to login page
         .then (async (result) => {
             let responseJson = await result.json();
 			console.log(responseJson);
@@ -60,15 +60,16 @@ export default class Signup extends Component {
             console.log(error);
         });
       }
+      // Status bar title
       static navigationOptions = {
-        title: 'Sign Up',
+        headerStyle: {backgroundColor: '#00a8ff'},
       };
       
       validation (text, type){
         //let textValue = text.target.username;
         switch (type){
             case "username" : {
-                    this.setState({username: text})
+                this.setState({username: text})
             }
             case "FirstName" : {
                 this.setState({FirstName: text})
@@ -90,35 +91,35 @@ export default class Signup extends Component {
     
     render() {
         return (
-           
             <KeyboardAvoidingView behavior = "padding" style = {styles.container}>
                 
-                <View style = {styles.formContainer} >
+                <View style = {styles.container} >
                     <StatusBar barStyle = 'default'/>
-                    
-                    <ScrollView>
-                        <Text style={styles.heading}> Sign Up</Text>
+                        <ScrollView>
+                        
+                            <Text style={styles.heading}> Sign Up</Text>
                             
+                
                             <TextInput style = {styles.input} placeholder = "Username" 
                             onChangeText={(text) => this.validation(text, 'username') }
                             returnKeyType = "next"
                             onSubmitEditing = {()=> this.firstNameInput.focus()}
                             /> 
-
+                           
                             <TextInput style = {styles.input} placeholder = "First Name" 
                             onChangeText={(text) => this.validation(text, 'FirstName')}
                             returnKeyType = "next"
                             ref={(input) => this.firstNameInput = input}
                             onSubmitEditing = {()=> this.lastNameInput.focus()}
                             /> 
-
+                           
                             <TextInput style = {styles.input} placeholder = "Last Name" 
                             onChangeText={(text) => this.validation(text, 'LastName')}
                             returnKeyType = "next"
                             ref={(input) => this.lastNameInput = input}
                             onSubmitEditing = {()=> this.passwordInput.focus()}
                             />
-
+                           
                             <TextInput style = {styles.input} placeholder = "Password min. 7 characters" 
                             onChangeText={(text) => this.validation(text, 'Password')}
                             secureTextEntry 
@@ -127,7 +128,6 @@ export default class Signup extends Component {
                             onSubmitEditing = {()=> this.repasswordInput.focus()}
                             />
 
-                            
                             <TextInput style = {styles.input} placeholder = "Re-type Password" 
                             onChangeText={(text) => this.validation(text, 'RetypePassword')}
                             secureTextEntry 
@@ -136,7 +136,6 @@ export default class Signup extends Component {
                             onSubmitEditing = {()=> this.emailInput.focus()}
                             />
 
-                            
                             <TextInput style = {styles.input} placeholder = "Email" 
                             onChangeText={(text) => this.validation(text, 'Email')}
                             returnKeyType = "done"
@@ -146,7 +145,7 @@ export default class Signup extends Component {
                             <TouchableOpacity style = {styles.buttonContainer} onPress={this.handleSubmit}> 
                             <Button onPress={this.handleSubmit} color = 'white' title="SUBMIT"/>
                             </TouchableOpacity>  
-
+                        
                             <Button onPress={() => this.props.navigation.navigate('LoginPage')} 
                             color ='white'
                             title="Already Registered? Login"/>
@@ -154,10 +153,9 @@ export default class Signup extends Component {
                             <Text> Already Registered? Login </Text>
                             </TouchableOpacity> */}
                             
-                    </ScrollView>         
+                         </ScrollView>   
                 </View>
-              </KeyboardAvoidingView>
-            
+            </KeyboardAvoidingView>    
         )
     }
 }
@@ -166,14 +164,14 @@ const styles = StyleSheet.create ( {
         flex : 1,
         justifyContent: 'center',
         backgroundColor : '#00a8ff',
-        padding:30,
+        padding:15,
     },
     input : {
         height: 40,
         fontSize: 20,
         backgroundColor : 'rgba(255,255,255,0.8)',
         marginBottom: 20,
-        padding: 10,
+        padding: 8,
        
     },
     buttonContainer: {
@@ -197,6 +195,7 @@ const styles = StyleSheet.create ( {
         fontWeight: '800',
         fontSize: 30,
         textAlign: 'center',
+        marginTop: 35,
         marginBottom: 30,
         color : 'white'
     },

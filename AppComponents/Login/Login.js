@@ -15,7 +15,7 @@ import {
 
 export default class Login extends Component {
     static navigationOptions = {
-        title: 'Login',
+        headerStyle: {backgroundColor: '#00a8ff'},
       };
       constructor(props) {
         super(props);
@@ -55,7 +55,7 @@ export default class Login extends Component {
 			}
 
 			await AsyncStorage.setItem('token', resJson.token);
-			this.props.navigation.navigate('bottomHome');
+			this.props.navigation.navigate('Home');
         })
         .catch(error => {
             console.log(error);
@@ -72,14 +72,16 @@ export default class Login extends Component {
                         </View>
                         <View >
                         
-                        <Text style={styles.heading}> Expenses Tracker</Text>
+                            <Text style={styles.heading}> Expense Tracker</Text>
                             
+                        
                             <Text style = {styles.text}> Username</Text>
                             <TextInput style = {styles.input} placeholder = "Username" 
                             onChangeText={text => this.setState({username: text})}
                             returnKeyType = "next"
                             onSubmitEditing = {()=> this.passwordInput.focus()}
                             /> 
+                        
                             <Text style = {styles.text}t> Password</Text>
                             <TextInput style = {styles.input} placeholder = "Password" 
                             onChangeText={text => this.setState({password: text})}
@@ -89,14 +91,19 @@ export default class Login extends Component {
         
                             /> 
                             
-                            <TouchableOpacity style = {styles.buttonContainer} onPress={this.Login}> 
+                            {/* <TouchableOpacity style = {styles.buttonContainer} onPress={this.Login}> 
                             <Button color = 'white' onPress={() => this.loginCheck()} 
                             title="LOGIN"/>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
+
+                            <TouchableOpacity style = {styles.buttonContainer}> 
+                            <Button color = 'white' onPress={() => this.props.navigation.navigate('Home')} 
+                            title="LOGIN"/>
+                            </TouchableOpacity> 
                         
-                        <Button onPress={() => this.props.navigation.navigate('SignupPage')} 
-                        color = 'white'
-                        title="Create Account Now?"/>
+                            <Button onPress={() => this.props.navigation.navigate('SignupPage')} 
+                            color = 'white'
+                            title="Create Account Now?"/>
                         </View>
                     </View>
                
@@ -109,9 +116,9 @@ export default class Login extends Component {
 const styles = StyleSheet.create ( {
     container : {
         flex : 1,
-        justifyContent: 'center',
+        //justifyContent: 'center',
         backgroundColor : '#00a8ff',
-        padding:20
+        padding:15,
     },
     input : {
         height: 40,
@@ -143,6 +150,7 @@ const styles = StyleSheet.create ( {
         fontWeight: '800',
         fontSize: 30,
         textAlign: 'center',
+        marginTop: 120,
         marginBottom: 30,
         color : 'white'
     }
