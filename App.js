@@ -7,84 +7,87 @@
  */
 
 import React, { Component } from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createStackNavigator, 
-        createAppContainer, 
-        createBottomTabNavigator } from 'react-navigation';
+		createAppContainer, 
+		createBottomTabNavigator } from 'react-navigation';
+import {HomeNavigation, 
+		chartNaviagtion, 
+		setBudgetNaviagtion, 
+		settingsNavigation} from './AppComponents/Navigations/stackNavigator'
 import Login from './AppComponents/Login/Login';
 import Signup from './AppComponents/Signup/Signup';
-import Dashboard from './AppComponents/Homepage/Dashboard';
-import Accounts from './AppComponents/DashboardPages/Account/Accounts';
-import ExpensesGraph from './AppComponents/DashboardPages/AccountGraphs/ExpensesGraph';
-import SetGoals from './AppComponents/DashboardPages/SetBudgets/SetGoals';
-import CategoriesScreen from './AppComponents/DashboardPages/Categorise/CategoriseScreen'
 
 export default class App extends Component {
-  render() {
-    return (
-      <AppContainer />
-    );
-  }
+	render() {
+		return (
+			<AppContainer />
+		);
+	}
 }
 const BottomTab = createBottomTabNavigator(
-  {
-    bottomHome: Dashboard,
-    GraphsPage: ExpensesGraph,
-    AccountsPage: Accounts,
-    
-  },
-  {
-    defaultNavigationOptions: ({ navigation }) => ({
-      // tabBarVisible: navigation.state.routeName == "loginPage" ? false : true,
-      tabBarIcon: ( {focused, horizontal, tintColor }) => {
-        const { routeName } = navigation.state;
-        icon = <Icon name= "home" size={25} />
-        switch(routeName){
-          case "bottomHome":
-            icon = <Icon name="home" size={25} color={tintColor} />
-            break;
-            
-            case "GraphsPage":
-            icon = <Icon name="line-chart" size={25} color={tintColor} />
-            break;
-            
-            case "AccountsPage":
-            icon = <Icon name="gear" size={25} color={tintColor} />
-            break;
-        }
+	{
+		Home: HomeNavigation,
+		Chart: chartNaviagtion,
+		SetBudget: setBudgetNaviagtion,
+		Settings: settingsNavigation ,	
+	},
+	{
+		defaultNavigationOptions: ({ navigation }) => ({
+			 //tabBarVisible: navigation.state.routeName == "LoginPage" ? false : true,
+			tabBarIcon: ( {focused, horizontal, tintColor }) => {
+				const { routeName } = navigation.state;
+				icon = <Icon name= "home" size={25} />
+				switch(routeName){
+					case "Home":
+					icon = <Icon name="home" size={25} color={tintColor} />
+					break;
+					
+					case "Chart":
+					icon = <Icon name="line-chart" size={25} color={tintColor} />
+					break;
 
-        return icon;
+					case "SetBudget":
+					icon = <Icon name="plus-circle" size={25} color={tintColor} />
+					break;
+					
+					case "Settings":
+					icon = <Icon name="gear" size={25} color={tintColor} />
+					break;
+				}
 
-      },
-    }),
-    tabBarOptions: {
-      //activeTintColor: '#FF6F00',
-      activeTintColor: '#0652DD',
-      inactiveTintColor: '#263238',
-      //showLabel: false
+				return icon;
 
-    },
-  }
+			},
+		}),
+		tabBarOptions: {
+			//activeTintColor: '#FF6F00',
+			activeTintColor: '#0652DD',
+			inactiveTintColor: '#263238',
+			//showLabel: false
+		},
+	}
 );
 const RootStack = createStackNavigator (
-  {LoginPage :  Login,
-    SignupPage : Signup,
-    //Home: Dashboard, 
-    //AccountsPage: Accounts,
-    //GraphsPage : ExpensesGraph,
-    SetBudgetPage : SetGoals,
-    CategoriesPage: CategoriesScreen,
-    Tabs: {
-      screen: BottomTab,
-    }
-  },
-  {
-    initialRouteName: 'LoginPage',
-  }
+	{LoginPage :  Login,
+	SignupPage : Signup,
+		Tabs: {
+			screen: BottomTab,
+			navigationOptions:{
+				header: null
+			}
+		
+		}
+	},
+	{
+		initialRouteName: 'LoginPage', defaultNavigationOptions: {
+			headerStyle: {
+			  backgroundColor: '#1289A7',
+			}
+		}
+	}
 );
-
 
 const AppContainer = createAppContainer(RootStack);
 
-// const AppContainer = createAppContainer(BottomTab);
+ //const AppContainer = createAppContainer(BottomTab);
