@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, ActivityIndicator} from 'react-native';
 
+
 export default class Dashboard extends Component {
 	static navigationOptions = {
 		title:'Dashboard',
@@ -9,52 +10,79 @@ export default class Dashboard extends Component {
 	};
 	constructor(props) {
 		super(props);
-		this.state = {
-			startDate: "01-01-2019",
-			FinishDate: new Date(),
-			loading: false,      
-			data: [],      
+		this.state = {    
+			data: [],
+			totalBalance:0,      
 			error: null, 
 		};
 	}
-	componentDidMount (){   
-		//   const url = `My URL`;
-		//   this.setState({ loading: true });
-				
-		//     fetch(url)      
-		//       .then(res => res.json())      
-		//       .then(res => {        
-		//         this.setState({          
-		//           data: res.food_array,  // database array        
-		//           error: res.error || null,          
-		//           loading: false,        
-		//         });        
-						
-		//        //this.arrayholder = res.results;  //No need of this, this is for, if we create a new array     
-		//      })      
-		//      .catch(error => {        
-		//        this.setState({ error, loading: false });      
-		//      });  
-		//   };
-		this.setState({ 
-			data:[
-				{key: "Expense",  total:500},
-				{key: "Income", total:1500},
-			]
-		})
+	 componentDidMount (){  
+		 const balance = this.state.totalBalance
+			  
+		 fetch('http://localhost:3000/api/totalbalance', {
+			method: 'GET',
+			headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+			})
+			.then(async(result) => {
+			let resJson = await result.json();
+			console.log(resJson);
+			
+			this.setState({          
+				totalBalance: resJson[0],  // database array       
+				//error: resJson.error || null,                 
+			  });        
+		   })      
+		   .catch(error => {        
+			 this.setState({ error});      
+		   }); 
 
+		  const url = `http://localhost:3000/api/balance`;
+		  this.setState({ loading: true });
+				
+		    fetch(url)      
+		      .then(res => res.json())      
+		      .then(res => {        
+		        this.setState({          
+		          data: res,  // database array        
+		          error: res.error || null,          
+		          loading: false,        
+		        });        
+		     })      
+		     .catch(error => {        
+		       this.setState({ error, loading: false });      
+		     });  
+		  };
+
+		  //Test data
+	// 	this.setState({ 
+	// 		data:[
+	// 			{key: "Expense",  total:500},
+	// 			{key: "Income", total:1500},
+	// 		]
+	// 	})
+
+	// }
+	renderBalance = ({item}) => {
+		return (
+			<Text style={styles.balance}> Balance  £{item.balance.toFixed(2)} </Text>
+		)
 	}
+
 	renderItem=({item}) => { 
 		return(
-			this.state.loading
-			? 
-			<View style={{ justifyContent: 'center', alignItems: 'center'}}>
-				<ActivityIndicator size="large" color= 'black' animating/>
-			</View>
-			:
-			<View style={{flexDirection:'row', marginBottom: 5}}>
-				<Text style={styles.welcome} > {item.key} </Text>
-				<Text style={styles.amount} > £{item.total} </Text>
+			<View>
+				<View style={{flexDirection:'row', marginBottom: 5}}>
+					<Text style={styles.welcome} > Expense </Text>
+					<Text style={styles.expense} > - £{item.Expense.toFixed(2)} </Text>
+				</View>
+					<View style={{flexDirection:'row', marginBottom: 5}}>
+					<Text style={styles.welcome} > Income </Text>
+					<Text style={styles.income} > + £{item.Income.toFixed(2)} </Text>
+				</View>
+
 			</View>
 			)
 	}
@@ -70,12 +98,12 @@ export default class Dashboard extends Component {
 		return (
 			<View >
 				<View >
-					<Text style={styles.balance}> Balance  £1500</Text>
+				<Text style={styles.balance}> Balance   £{ this.state.totalBalance.balance} </Text>
 				</View>
 				<FlatList 
 					data={this.state.data}   
 					renderItem={this.renderItem} 
-					//keyExtractor={(item,index)=> index} 
+					keyExtractor={(item,index)=> index.toString()} 
 					ItemSeparatorComponent ={this.renderSeparator}
 				/>
 
@@ -101,6 +129,7 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		marginTop: 30,
 		marginBottom:30,
+		color: '#09872d'
 	},
 	welcome: {
 		flex:1,
@@ -111,7 +140,7 @@ const styles = StyleSheet.create({
 		height: 60,
 		color: 'black',
 	},
-	amount: {
+	income: {
 		flex:1,
 		fontSize: 20,
 		marginRight: 5,
@@ -119,7 +148,17 @@ const styles = StyleSheet.create({
 		backgroundColor: '#c8d0db',
 		padding: 15,
 		height: 60,
-		color: 'black'
+		color: 'green'
+	},
+	expense: {
+		flex:1,
+		fontSize: 20,
+		marginRight: 5,
+		textAlign: 'right',
+		backgroundColor: '#c8d0db',
+		padding: 15,
+		height: 60,
+		color: 'red'
 	},
 	button:{
 		width: 200,

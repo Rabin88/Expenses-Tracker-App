@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, ScrollView, ActivityIndicator} from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome';
 import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
+
 
 //import { ScrollView } from 'react-native-gesture-handler';
 
@@ -15,45 +16,85 @@ export default class Categories extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			loading: false,
 			startDate: "01-01-2019",
 			FinishDate: new Date(),      
-			data: [],      
-			error: null,    
+			data: []        
 		};
 
 	}
-	componentDidMount (){   
-		//   const url = `My URL`;
-		//   this.setState({ loading: true });
-				
-		//     fetch(url)      
-		//       .then(res => res.json())      
-		//       .then(res => {        
-		//         this.setState({          
-		//           data: res.food_array,  // database array        
-		//           error: res.error || null,          
-		//           loading: false,        
-		//         });        
-						
-		//        //this.arrayholder = res.results;  //No need of this, this is for, if we create a new array     
-		//      })      
-		//      .catch(error => {        
-		//        this.setState({ error, loading: false });      
-		//      });  
-		//   };
-		this.setState({ 
-			data:[
-				{key: "Groceries",  total:10},
-				{key: "Food", total:20},
-				{key: "Shopping",   total:304656},
-				{key: "Travel" ,    total:4450},
-				{key: "Bills",      total: 50},
-				{key: "Others", total: 0},
-			]
-		})
+	componentDidMount (){  
+		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
+		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
 
-	}
+        fetch('http://localhost:3000/api/categories', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+				start_date: sDate,
+				finish_date :fDate,
+            })
+        })     
+		.then(res => res.json())      
+		.then(res => {        
+		this.setState({          
+			data: res,  // database array        
+			error: res.error || null,          
+			loading: false,        
+		});        
+				
+		//this.arrayholder = res.results;  //No need of this, this is for, if we create a new array     
+		})      
+		.catch(error => {        
+		this.setState({ error, loading: false });      
+		});  
+	};
+	getData (){  
+		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
+		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
+
+        fetch('http://localhost:3000/api/categories', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+				start_date: sDate,
+				finish_date :fDate,
+            })
+        })     
+		.then(res => res.json())      
+		.then(res => { 
+			if(res.length === 0){
+				alert('Categories Empty!')
+				return;
+			}  else {
+				this.setState({          
+					data: res,  // database array        
+					error: res.error || null,                  
+				});
+			}     
+			        
+		})      
+		.catch(error => {        
+		this.setState({ error, loading: false });      
+		});  
+	};
+	// 	this.setState({ 
+	// 		data:[
+	// 			{key: "Groceries",  total:10},
+	// 			{key: "Food", total:20},
+	// 			{key: "Shopping",   total:304656},
+	// 			{key: "Travel" ,    total:4450},
+	// 			{key: "Bills",      total: 50},
+	// 			{key: "Others", total: 0},
+	// 		]
+	// 	})
+
+	// }
 
 	renderItem=({item}) => { 
 		return(
@@ -64,8 +105,8 @@ export default class Categories extends Component {
 			</View>
 			:
 			<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
-				<Text style={styles.category} > {item.key} </Text>
-				<Text style={styles.amount} > -£{item.total} </Text>
+				<Text style={styles.category} > {item._id.Categories} </Text>
+				<Text style={styles.amount} > -£{item.total.toFixed(2)} </Text>
 			</View>
 			)
 	}
@@ -82,7 +123,7 @@ export default class Categories extends Component {
 			<ScrollView>
 				<View>
 
-						
+				{/* <Text style={styles.dateStyle}> {moment(this.state.startDate).format()} </Text>	 */}
 					<View style={{ flexDirection:'row'}}>
 						<Text style={styles.dateStyle}> From </Text>
 						<Text style={styles.dateStyle}> To </Text>
@@ -96,7 +137,7 @@ export default class Categories extends Component {
 						placeholder="select date"
 						format="DD-MM-YYYY"
 						minDate="01-01-2019"
-						maxDate="01-09-2019"
+						maxDate={this.state.FinishDate}
 						confirmBtnText="Confirm"
 						cancelBtnText="Cancel"
 						customStyles={{
@@ -120,7 +161,7 @@ export default class Categories extends Component {
 						placeholder="select date"
 						format="DD-MM-YYYY"
 						minDate="01-01-2019"
-						maxDate="01-09-2019"
+						maxDate = {this.state.FinishDate}
 						confirmBtnText="Confirm"
 						cancelBtnText="Cancel"
 						customStyles={{
@@ -141,13 +182,13 @@ export default class Categories extends Component {
 					</View>
 
 					<TouchableOpacity style = {styles.button} > 
-					<Button onPress={() => this.props.navigation.navigate('CategoriesPage')} color = 'white' title="Set"/>
+					<Button onPress={() => this.getData()} color = 'white' title="Set"/>
 					</TouchableOpacity> 
 							
 					<FlatList 
 						data={this.state.data}   
 						renderItem={this.renderItem} 
-						//keyExtractor={(item,index)=> index} 
+						keyExtractor={(item,index)=> item._id.Categories} 
 						ItemSeparatorComponent ={this.renderSeparator}
 					/>
 					
