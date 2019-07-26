@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, ActivityIndicator} from 'react-native';
+import { StyleSheet, Text, View, Button, Image, FlatList, TouchableOpacity} from 'react-native';
 
 
 export default class Dashboard extends Component {
@@ -67,7 +67,7 @@ export default class Dashboard extends Component {
 	// }
 	renderBalance = ({item}) => {
 		return (
-			<Text style={styles.balance}> Balance  £{item.balance.toFixed(2)} </Text>
+			<Text style={styles.balance}> Balance  £{item.balance.toLocaleString(undefined, {maximumFractionDigits:2})} </Text>
 		)
 	}
 
@@ -76,11 +76,11 @@ export default class Dashboard extends Component {
 			<View>
 				<View style={{flexDirection:'row', marginBottom: 5}}>
 					<Text style={styles.welcome} > Expense </Text>
-					<Text style={styles.expense} > - £{item.Expense.toFixed(2)} </Text>
+					<Text style={styles.expense} > - £{item.Expense.toLocaleString(undefined, {maximumFractionDigits:2})} </Text>
 				</View>
 					<View style={{flexDirection:'row', marginBottom: 5}}>
 					<Text style={styles.welcome} > Income </Text>
-					<Text style={styles.income} > + £{item.Income.toFixed(2)} </Text>
+					<Text style={styles.income} > + £{item.Income.toLocaleString(undefined, {maximumFractionDigits:2})} </Text>
 				</View>
 
 			</View>
@@ -96,9 +96,15 @@ export default class Dashboard extends Component {
 	 
 	render() {
 		return (
-			<View >
+			<View style={styles.container}>
+				<View>
+				<Image  style = {{ width: 200, height: 200, alignSelf: 'center', marginTop: 30, marginBottom:10, }}
+					source={require('/Users/rabinpun/Desktop/ReactNative/Finance/assets/logo.png')}
+					/>
+				
 				<View >
 				<Text style={styles.balance}> Balance   £{ this.state.totalBalance.balance} </Text>
+				{/* <Text style={styles.balance}> Balance   £{ this.renderBalance()} </Text> */}
 				</View>
 				<FlatList 
 					data={this.state.data}   
@@ -110,7 +116,7 @@ export default class Dashboard extends Component {
 				<TouchableOpacity style = {styles.button} > 
 				<Button onPress={() => this.props.navigation.navigate('CategoriesPage')} color = 'white' title="View Transactions"/>
 				</TouchableOpacity> 
-				
+				</View>
 			</View>
 		)
 	}
@@ -119,9 +125,9 @@ export default class Dashboard extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center',
+		//justifyContent: 'center',
 		//alignItems: 'center',
-		backgroundColor: '#F5FCFF',	
+		backgroundColor: '#afdfed',	
 	},
 	balance: {
 		fontSize: 20,
@@ -135,7 +141,8 @@ const styles = StyleSheet.create({
 		flex:1,
 		fontSize: 20,
 		marginLeft: 5,
-		backgroundColor: '#c8d0db',
+		//backgroundColor: '#c8d0db',
+		backgroundColor: '#e1e8e5',
 		padding: 15,
 		height: 60,
 		color: 'black',
@@ -145,7 +152,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		marginRight: 5,
 		textAlign: 'right',
-		backgroundColor: '#c8d0db',
+		backgroundColor: '#e1e8e5',
 		padding: 15,
 		height: 60,
 		color: 'green'
@@ -155,7 +162,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		marginRight: 5,
 		textAlign: 'right',
-		backgroundColor: '#c8d0db',
+		backgroundColor: '#e1e8e5',
 		padding: 15,
 		height: 60,
 		color: 'red'

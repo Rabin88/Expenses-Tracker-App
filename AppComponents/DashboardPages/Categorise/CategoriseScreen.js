@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, ScrollView, ActivityIndicator} from 'react-native'
+import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, ScrollView} from 'react-native'
 import DatePicker from 'react-native-datepicker';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
 
@@ -39,13 +40,10 @@ export default class Categories extends Component {
         })     
 		.then(res => res.json())      
 		.then(res => {        
-		this.setState({          
-			data: res,  // database array        
-			error: res.error || null,          
-			loading: false,        
-		});        
-				
-		//this.arrayholder = res.results;  //No need of this, this is for, if we create a new array     
+			this.setState({          
+				data: res,  // database array        
+				error: res.error || null,                 
+			});           
 		})      
 		.catch(error => {        
 		this.setState({ error, loading: false });      
@@ -76,40 +74,121 @@ export default class Categories extends Component {
 					data: res,  // database array        
 					error: res.error || null,                  
 				});
-			}     
-			        
+			}     	        
 		})      
 		.catch(error => {        
-		this.setState({ error, loading: false });      
+		this.setState({ error});      
 		});  
 	};
-	// 	this.setState({ 
-	// 		data:[
-	// 			{key: "Groceries",  total:10},
-	// 			{key: "Food", total:20},
-	// 			{key: "Shopping",   total:304656},
-	// 			{key: "Travel" ,    total:4450},
-	// 			{key: "Bills",      total: 50},
-	// 			{key: "Others", total: 0},
-	// 		]
-	// 	})
 
+	// renderItem=({item}) => { 
+	// 	return(
+	// 		<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
+	// 			<Text style={styles.category} > {item._id.Categories} </Text>
+	// 			<Text style={styles.amount} > -£{item.total.toLocaleString(undefined, {maximumFractionDigits:2})} </Text>
+	// 		</View>
+	// 		)
 	// }
 
 	renderItem=({item}) => { 
-		return(
-			this.state.loading
-			? 
-			<View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-				<ActivityIndicator size="large" color= 'black' animating/>
-			</View>
-			:
-			<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
-				<Text style={styles.category} > {item._id.Categories} </Text>
-				<Text style={styles.amount} > -£{item.total.toFixed(2)} </Text>
-			</View>
-			)
+		if (item._id.Categories === 'Food'){
+			return(
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('FoodScreen')}>
+				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
+					<View style={{flex:1}}>
+					<Text style={styles.category}> <Icon name="cutlery" size={20}/>  {item._id.Categories}  </Text>
+					<Text style={styles.countTransaction}>  {item.count_transaction} transactions  </Text>
+					</View>
+					<Text style={styles.amount} > - £{item.total.toFixed(2)} </Text>
+				</View>
+				</TouchableOpacity>
+				)
+		} else if (item._id.Categories === 'Groceries'){
+			return(
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('GroceriesScreen')}>
+				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
+					<View style={{flex:1}}>
+						<Text style={styles.category}> <Icon name="shopping-cart" size={20}/>  {item._id.Categories}  </Text>
+						<Text style={styles.countTransaction}>  {item.count_transaction} transactions  </Text>
+					</View>
+					<Text style={styles.amount} > - £{item.total.toFixed(2)} </Text>
+				</View>
+				</TouchableOpacity>
+				)
+		} else if (item._id.Categories === 'Shopping'){
+			return(
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('ShoppingScreen')}>
+				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
+					<View style={{flex:1}}>
+						<Text style={styles.category}> <Icon name="shopping-bag" size={20}/>  {item._id.Categories}  </Text>
+						<Text style={styles.countTransaction}>  {item.count_transaction} transactions  </Text>
+					</View>
+					<Text style={styles.amount} > - £{item.total.toFixed(2)} </Text>
+				</View>
+				</TouchableOpacity>
+				)
+		} else if (item._id.Categories === 'Travel'){
+			return(
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('TravelScreen')}>
+				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
+					<View style={{flex:1}}>
+						<Text style={styles.category}> <Icon name="subway" size={20}/>  {item._id.Categories}  </Text>
+						<Text style={styles.countTransaction}>  {item.count_transaction} transactions  </Text>
+					</View>
+					<Text style={styles.amount} > - £{item.total.toFixed(2)} </Text>
+				</View>
+				</TouchableOpacity>
+				)
+		} else if (item._id.Categories === 'Housing'){
+			return(
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('HousingScreen')}>
+				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
+					<View style={{flex:1}}>
+						<Text style={styles.category}> <Icon name="home" size={20}/>  {item._id.Categories}  </Text>
+						<Text style={styles.countTransaction}>  {item.count_transaction} transactions  </Text>
+					</View>
+					<Text style={styles.amount} > - £{item.total.toFixed(2)} </Text>
+				</View>
+				</TouchableOpacity>
+				)
+		} else if (item._id.Categories === 'Bills'){
+			return(
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('BillsScreen')}>
+				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
+					<View style={{flex:1}}>
+						<Text style={styles.category}> <Icon name="list-alt" size={20}/>  {item._id.Categories}  </Text>
+						<Text style={styles.countTransaction}>  {item.count_transaction} transactions  </Text>
+					</View>
+					<Text style={styles.amount} > - £{item.total.toFixed(2)} </Text>
+				</View>
+				</TouchableOpacity>
+				)
+		} else if (item._id.Categories === 'Others' &&  item.total != 0){
+			return(
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('OthersScreen')}>
+				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
+					<View style={{flex:1}}>
+						<Text style={styles.category}> <Icon name="list-ul" size={20}/>  {item._id.Categories}  </Text>
+						<Text style={styles.countTransaction}>  {item.count_transaction} transactions  </Text>
+					</View>
+					<Text style={styles.amount} > - £{item.total.toFixed(2)} </Text>
+				</View>
+				</TouchableOpacity>
+				)
+		} else if (item._id.Categories === 'Others' &&  item.total === 0){
+			return;
+		} 
+		else {
+			return;
+		// return(
+		// 	<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
+		// 		<Text style={styles.category} > {item._id.Categories} </Text>
+		// 		<Text style={styles.amount} > -£{item.total.toLocaleString(undefined, {maximumFractionDigits:2})} </Text>
+		// 	</View>
+		// 	)
+		 }
 	}
+
 	renderSeparator = () => {
 		return (
 			<View style = {{height: 2, width: '100%',color: 'black'}}>
@@ -120,8 +199,8 @@ export default class Categories extends Component {
 
 	render() {
 		return (
-			<ScrollView>
-				<View>
+			// <ScrollView>
+				<View style={styles.container}>
 
 				{/* <Text style={styles.dateStyle}> {moment(this.state.startDate).format()} </Text>	 */}
 					<View style={{ flexDirection:'row'}}>
@@ -131,7 +210,7 @@ export default class Categories extends Component {
 
 					<View style={{flexDirection:'row'}}>
 						<DatePicker
-						style={{width: 180}}
+						style={{width: 180, borderColor: 'black',}}
 						date={this.state.startDate} //initial date from state
 						mode="date" //The enum of date, datetime and time
 						placeholder="select date"
@@ -149,7 +228,8 @@ export default class Categories extends Component {
 							},
 							dateInput: {
 							fontSize: 15,
-							marginLeft: 10
+							marginLeft: 10,
+							backgroundColor: 'white'
 							}
 						}}
 						onDateChange={(date) => {this.setState({startDate: date})}}
@@ -173,6 +253,7 @@ export default class Categories extends Component {
 							},
 							dateInput: {
 							fontSize: 15,
+							backgroundColor: 'white'
 							//marginLeft: 10,
 							}
 						}}
@@ -190,58 +271,45 @@ export default class Categories extends Component {
 						renderItem={this.renderItem} 
 						keyExtractor={(item,index)=> item._id.Categories} 
 						ItemSeparatorComponent ={this.renderSeparator}
-					/>
-					
-						
+					/>		
 				</View>
-			</ScrollView>
+			// </ScrollView>
 		)
 	}
 }
 const styles = StyleSheet.create({
 		container: {
 			flex: 1,
-			//justifyContent: 'center',
-			//alignItems: 'center',
-			//backgroundColor: '#00a8ff',
-		 
+			backgroundColor: '#afdfed', 
 		},
 		dateStyle: {
-			fontSize: 20,
-			margin: 10,
-			marginRight:100,
-			//padding: 10,
-			
-
+			fontSize: 15,
+			marginTop: 10,
+			marginBottom:5,
+			marginLeft: 10,
+			marginRight:115,
 		},
 		welcome: {
 			fontSize: 20,
 			textAlign: 'center',
 			marginBottom: 30,
 			marginTop: 30,
-
 		},
 		category: {
-			flex:1,
-			backgroundColor: '#c8d0db',
-			//borderWidth: 0.5,
-			//borderColor: '#d6d7da',
+			//flex:1,
+			//flexDirection: 'column',
+			backgroundColor: '#e1e8e5',
 			fontSize: 20,
-			padding: 20,
+			padding: 15,
 			marginLeft: 5,
-			//marginRight: 5,
-			height: 70,
-			color: 'black',
-			
+			height: 50,
+			color: 'black',	
 		},
 		amount: {
 			flex:1,
-			backgroundColor: '#c8d0db',
-			//borderWidth: 0.5,
-			//borderColor: '#d6d7da',
+			backgroundColor: '#e1e8e5',
 			fontSize: 20,
 			padding: 20,
-			//marginLeft: 5,
 			marginRight: 5,
 			height: 70,
 			textAlign: 'right',
@@ -249,7 +317,6 @@ const styles = StyleSheet.create({
 		},
 		button:{
 			width: 150,
-			//marginTop:10,
 			marginBottom:10,
 			backgroundColor:'#179bbd',
 			borderRadius:40,
@@ -257,5 +324,13 @@ const styles = StyleSheet.create({
 			borderColor: '#fff',
 			alignSelf: 'center',
 		},
+		countTransaction : {
+			backgroundColor: '#e1e8e5',
+			fontSize: 16,
+			marginLeft: 5,
+			marginBottom: 5,
+			height: 20,
+			color: '#324dc7',
+			textAlign: 'center'	
+		}
 });
-
