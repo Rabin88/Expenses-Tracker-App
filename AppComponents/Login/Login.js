@@ -54,7 +54,8 @@ export default class Login extends Component {
 				return;
 			}
 
-			await AsyncStorage.setItem('token', resJson.token);
+            await AsyncStorage.setItem('token', resJson.token);
+            await AsyncStorage.setItem('userId', resJson._id);
 			this.props.navigation.navigate('Home');
         })
         .catch(error => {
