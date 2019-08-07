@@ -20,14 +20,17 @@ export default class Login extends Component {
       constructor(props) {
         super(props);
         this.state ={ username:"", 
-            password:""
-        
+            password:"",
         }
     }
 
-    loginCheck (){
+
+    //loginCheck 
+        handleSubmit = (event) => {
+        event.preventDefault();
 		const uname = this.state.username;
-		const pwd = this.state.password;
+        const pwd = this.state.password;
+
 
 		if(uname == '' || pwd == ''){
 			alert('Username/Password mismatch')
@@ -55,14 +58,22 @@ export default class Login extends Component {
 			}
 
             await AsyncStorage.setItem('token', resJson.token);
+            console.log(resJson.token)
             await AsyncStorage.setItem('userId', resJson._id);
-			this.props.navigation.navigate('Home');
+            console.log(resJson._id)
+            this.props.navigation.navigate('Home');
         })
         .catch(error => {
             console.log(error);
         });
+        // After login it will clear the username and password field
+        this.setState({
+            uname: '',
+            pwd:'',
+        })
      
     }
+
     render () {
         return (
             <KeyboardAvoidingView behavior = "padding" style = {styles.container}>
@@ -79,6 +90,7 @@ export default class Login extends Component {
                             <Text style = {styles.text}> Username</Text>
                             <TextInput style = {styles.input} placeholder = "Username" 
                             onChangeText={text => this.setState({username: text})}
+                            value={this.state.uname}
                             returnKeyType = "next"
                             onSubmitEditing = {()=> this.passwordInput.focus()}
                             /> 
@@ -86,21 +98,22 @@ export default class Login extends Component {
                             <Text style = {styles.text}t> Password</Text>
                             <TextInput style = {styles.input} placeholder = "Password" 
                             onChangeText={text => this.setState({password: text})}
+                            value={this.state.pwd}
                             secureTextEntry 
                             returnKeyType = "done"
                             ref={(input) => this.passwordInput = input}
         
                             /> 
                             
-                            {/* <TouchableOpacity style = {styles.buttonContainer} onPress={this.Login}> 
-                            <Button color = 'white' onPress={() => this.loginCheck()} 
-                            title="LOGIN"/>
-                            </TouchableOpacity> */}
-
                             <TouchableOpacity style = {styles.buttonContainer}> 
+                            <Button color = 'white' onPress={this.handleSubmit} 
+                            title="LOGIN"/>
+                            </TouchableOpacity>
+
+                            {/* <TouchableOpacity style = {styles.buttonContainer}> 
                             <Button color = 'white' onPress={() => this.props.navigation.navigate('Home')} 
                             title="LOGIN"/>
-                            </TouchableOpacity> 
+                            </TouchableOpacity>  */}
                         
                             <Button onPress={() => this.props.navigation.navigate('SignupPage')} 
                             color = 'white'

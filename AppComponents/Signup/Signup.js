@@ -99,7 +99,6 @@ export default class Signup extends Component {
                         
                             <Text style={styles.heading}> Sign Up</Text>
                             
-                
                             <TextInput style = {styles.input} placeholder = "Username" 
                             onChangeText={(text) => this.validation(text, 'username') }
                             returnKeyType = "next"

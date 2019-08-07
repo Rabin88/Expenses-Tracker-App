@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Button, TouchableOpacity, FlatList} from 'react-native'
+import { StyleSheet, Text, View, Button, TouchableOpacity, AsyncStorage} from 'react-native'
 import { VictoryLabel, VictoryPie, VictoryLegend } from "victory-native";
 import Svg from 'react-native-svg'
 import DatePicker from 'react-native-datepicker';
@@ -13,7 +13,8 @@ export default class Expenses extends Component {
 		super(props);
 		this.state = {
 			startDate: "01-01-2019",
-			FinishDate: new Date(),  
+			FinishDate: new Date(), 
+			myKey: " ", 
 			data:[
 				{ _id: 'Food', total: 0 },
 				{ _id: 'Travel', total: 0 },
@@ -22,20 +23,33 @@ export default class Expenses extends Component {
 		};
 	}
 
+	async getUserID() {
+		try {
+		  const value = await AsyncStorage.getItem('userId');
+		  this.setState({myKey: value});
+		  //alert(value)
+		} catch (error) {
+		  console.log("Error retrieving data" + error);
+		}
+	  }
+
 	componentDidMount (){  
 		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
 		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
 
-				fetch('http://localhost:3000/api/categories', {
-						method: 'POST',
-						headers: {
-								Accept: 'application/json',
-								'Content-Type': 'application/json',
-						},
-						body: JSON.stringify({
-				start_date: sDate,
-				finish_date :fDate,
-						})
+			fetch('http://localhost:3000/api/categories', {
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+					start_date: sDate,
+					finish_date :fDate,
+					userid: this.state.myKey
+					
+					
+					})
 				})     
 		.then(res => res.json())      
 		.then(res => {        
@@ -55,12 +69,13 @@ export default class Expenses extends Component {
 				fetch('http://localhost:3000/api/categories', {
 						method: 'POST',
 						headers: {
-								Accept: 'application/json',
+								'Accept': 'application/json',
 								'Content-Type': 'application/json',
 						},
 						body: JSON.stringify({
 				start_date: sDate,
 				finish_date :fDate,
+				userid: this.state.myKey
 						})
 				})     
 		.then(res => res.json())      
@@ -87,11 +102,14 @@ export default class Expenses extends Component {
 		total.toFixed(2)
 		)
 	}
-	
+
 	render() {
 		return (
 			<View >
 				<View style={{ flexDirection:'row'}}>
+				<TouchableOpacity onPress ={this.getUserID()}>  
+						<Text> </Text>  
+						</TouchableOpacity>
 						<Text style={styles.dateStyle}> From </Text>
 						<Text style={styles.dateStyle}> To </Text>
 					</View>

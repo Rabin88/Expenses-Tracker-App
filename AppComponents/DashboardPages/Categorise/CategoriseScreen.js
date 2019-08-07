@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, ScrollView} from 'react-native'
+import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, ScrollView,  AsyncStorage} from 'react-native'
 import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
@@ -19,23 +19,50 @@ export default class Categories extends Component {
 		this.state = {
 			startDate: "01-01-2019",
 			FinishDate: new Date(),      
-			data: []        
+			data: [] ,
+			myKey: " ",
+			token: ""       
 		};
 
 	}
-	componentDidMount (){  
+
+	async getUserID() {
+		try {
+		  const value = await AsyncStorage.getItem('userId');
+		  this.setState({myKey: value});
+		  //alert(value)
+		} catch (error) {
+		  console.log("Error retrieving data" + error);
+		}
+	  }
+	  async getToken() {
+		try {
+		  const jwtToken = AsyncStorage.getItem(token);
+		  this.setState({token: jwtToken});
+		  //alert(value)
+		} catch (error) {
+		  console.log("Error retrieving data" + error);
+		}
+	  }
+
+	 componentDidMount (){  
 		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
 		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
+		//var jwtToken  =  AsyncStorage.getItem(token);
+		
+		
 
         fetch('http://localhost:3000/api/categories', {
             method: 'POST',
             headers: {
-                Accept: 'application/json',
+				 'Authorization': 'Bearer '+ this.getToken(),
+                'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
 				start_date: sDate,
 				finish_date :fDate,
+				userid: this.state.myKey
             })
         })     
 		.then(res => res.json())      
@@ -62,6 +89,7 @@ export default class Categories extends Component {
             body: JSON.stringify({
 				start_date: sDate,
 				finish_date :fDate,
+				userid: this.state.myKey
             })
         })     
 		.then(res => res.json())      
@@ -201,6 +229,9 @@ export default class Categories extends Component {
 		return (
 			// <ScrollView>
 				<View style={styles.container}>
+					  <TouchableOpacity onPress ={this.getUserID()}>  
+						<Text> </Text>  
+						</TouchableOpacity>
 
 				{/* <Text style={styles.dateStyle}> {moment(this.state.startDate).format()} </Text>	 */}
 					<View style={{ flexDirection:'row'}}>

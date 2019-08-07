@@ -22,7 +22,7 @@ export default class Dashboard extends Component {
 		 fetch('http://localhost:3000/api/totalbalance', {
 			method: 'GET',
 			headers: {
-                Accept: 'application/json',
+                'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
 			})
