@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Image, FlatList, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, Button, Image, FlatList, TouchableOpacity, AsyncStorage} from 'react-native';
+import moment from 'moment';
+
 
 
 export default class Dashboard extends Component {
@@ -13,15 +15,33 @@ export default class Dashboard extends Component {
 		this.state = {    
 			data: [],
 			totalBalance:0,      
-			error: null, 
+			error: null,
+			myKey: '',
+			token: '', 
 		};
+		this.getStorageData();
 	}
-	 componentDidMount (){  
-		 const balance = this.state.totalBalance
+
+	async getStorageData() {
+		try {
+		  const user_id = await AsyncStorage.getItem('userId');
+		  const jwt_token = await AsyncStorage.getItem('token');
+			
+		  this.setState({myKey: user_id, token: jwt_token})
+		  this.getData();
+		  this.getExpensesData();
+		} catch (error) {
+		  console.log("Error retrieving data" + error);
+		}
+	  }
+
+	 	getData(){  
+		 let user_id = this.state.myKey;
 			  
-		 fetch('http://localhost:3000/api/totalbalance', {
+		 fetch(`http://localhost:3000/api/totalbalance?user_id=${user_id}`, {
 			method: 'GET',
 			headers: {
+				 'Authorization': 'Bearer '+ this.state.token,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
@@ -38,49 +58,87 @@ export default class Dashboard extends Component {
 		   .catch(error => {        
 			 this.setState({ error});      
 		   }); 
+		}
 
-		  const url = `http://localhost:3000/api/balance`;
-		  this.setState({ loading: true });
+
+		//   const url = `http://localhost:3000/api/balance`;
 				
-		    fetch(url)      
-		      .then(res => res.json())      
-		      .then(res => {        
+		//     fetch(url, {
+		// 		method: 'GET',
+		// 		headers: {
+		// 			 //'Authorization': 'Bearer '+ this.state.token,
+		// 			'Accept': 'application/json',
+		// 			'Content-Type': 'application/json',
+		// 		},
+		// 		})     
+		//       .then(res => res.json())      
+		//       .then(res => {        
+		//         this.setState({          
+		//           data: res,  // database array        
+		//           error: res.error || null,          
+		//           loading: false,        
+		//         });        
+		//      })      
+		//      .catch(error => {        
+		//        this.setState({ error, loading: false });      
+		//      });  
+		//   };
+		
+		 getExpensesData (){  
+			var dateObj = new Date();
+			var month = dateObj.getUTCMonth() + 1; //months from 1-12
+			var year = dateObj.getUTCFullYear();
+	
+			var monthStr = month;
+			if(month < 10){
+				monthStr = "0"+month;
+			}
+			var thisMonthFirstDay = `${year}-${monthStr}-01T00:00:00.000+00:00`;
+	
+			const sDate = thisMonthFirstDay;
+			const fDate = moment(dateObj, "DD-MM-YYYY", true).format();
+			console.log(sDate, fDate);
+	
+	
+			fetch('http://localhost:3000/api/expenses', {
+				method: 'POST',
+				headers: {
+					'Authorization': 'Bearer '+ this.state.token,
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					start_date: sDate,
+					finish_date :fDate,
+					userid: this.state.myKey
+				})
+			})
+				.then(res => res.json())      
+		      	.then(res => {        
 		        this.setState({          
-		          data: res,  // database array        
-		          error: res.error || null,          
-		          loading: false,        
+		          data: res,  // database array                
 		        });        
 		     })      
 		     .catch(error => {        
-		       this.setState({ error, loading: false });      
-		     });  
-		  };
-
-		  //Test data
-	// 	this.setState({ 
-	// 		data:[
-	// 			{key: "Expense",  total:500},
-	// 			{key: "Income", total:1500},
-	// 		]
-	// 	})
-
+		       this.setState({ error});      
+		     }) 
+		}
+	// renderBalance = ({item}) => {
+	// 	return (
+	// 		<Text style={styles.balance}> Balance  £{item.balance} </Text>
+	// 	)
 	// }
-	renderBalance = ({item}) => {
-		return (
-			<Text style={styles.balance}> Balance  £{item.balance.toLocaleString(undefined, {maximumFractionDigits:2})} </Text>
-		)
-	}
 
 	renderItem=({item}) => { 
 		return(
 			<View>
 				<View style={{flexDirection:'row', marginBottom: 5}}>
 					<Text style={styles.welcome} > Expense </Text>
-					<Text style={styles.expense} > - £{item.Expense.toLocaleString(undefined, {maximumFractionDigits:2})} </Text>
+					<Text style={styles.expense} > - £{item.Expense.toFixed(2)} </Text>
 				</View>
 					<View style={{flexDirection:'row', marginBottom: 5}}>
 					<Text style={styles.welcome} > Income </Text>
-					<Text style={styles.income} > + £{item.Income.toLocaleString(undefined, {maximumFractionDigits:2})} </Text>
+					<Text style={styles.income} > + £{item.Income.toFixed(2)} </Text>
 				</View>
 
 			</View>
@@ -95,6 +153,7 @@ export default class Dashboard extends Component {
 	}
 	 
 	render() {
+		let currentbalance = this.state.totalBalance.balance
 		return (
 			<View style={styles.container}>
 				<View>
@@ -103,7 +162,7 @@ export default class Dashboard extends Component {
 					/>
 				
 				<View >
-				<Text style={styles.balance}> Balance   £{ this.state.totalBalance.balance} </Text>
+				<Text style={styles.balance}> Balance   £{currentbalance} </Text>
 				{/* <Text style={styles.balance}> Balance   £{ this.renderBalance()} </Text> */}
 				</View>
 				<FlatList 

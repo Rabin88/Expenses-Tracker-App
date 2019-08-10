@@ -22,8 +22,9 @@ export default class Signup extends Component {
             alert('password does not match');
             return;
         }
-        // if(this.state.Password.length < 7){
-        //     alert('minimum password length must be 7');
+
+        // if(this.state.Password.length >0 && this.state.Password.length < 6){
+        //     alert('minimum password length must be 5');
         //     return;
         // }
 
@@ -47,8 +48,11 @@ export default class Signup extends Component {
          // Client get the response from Server, upon successful the user account will be created and navigate back to login page
         .then (async (result) => {
             let responseJson = await result.json();
-			console.log(responseJson);
-
+            console.log(responseJson);
+            
+            if(responseJson.error){
+                alert('Usename is already taken');
+            }
             if(responseJson.success){
                 this.props.navigation.navigate('LoginPage');
             }else{
@@ -119,7 +123,7 @@ export default class Signup extends Component {
                             onSubmitEditing = {()=> this.passwordInput.focus()}
                             />
                            
-                            <TextInput style = {styles.input} placeholder = "Password min. 7 characters" 
+                            <TextInput style = {styles.input} placeholder = "Password min. 5 characters" 
                             onChangeText={(text) => this.validation(text, 'Password')}
                             secureTextEntry 
                             returnKeyType = "next"

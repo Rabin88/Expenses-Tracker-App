@@ -8,6 +8,8 @@ import moment from 'moment';
 export default class Expenses extends Component {
 	static navigationOptions = {
 		title : 'Expense',
+		headerStyle: {backgroundColor: '#179bbd'},
+		headerTitleStyle: {color:'white'}
 	}
 	constructor(props) {
 		super(props);
@@ -20,47 +22,55 @@ export default class Expenses extends Component {
 				{ _id: 'Travel', total: 0 },
 			],
 			total:0,
+			token: ''
 		};
+
+		this.getStorageData();
 	}
 
-	async getUserID() {
+	async getStorageData() {
 		try {
-		  const value = await AsyncStorage.getItem('userId');
-		  this.setState({myKey: value});
+		  const user_id = await AsyncStorage.getItem('userId');
+		  const jwt_token = await AsyncStorage.getItem('token');
+
+		  this.setState({myKey: user_id, token: jwt_token});
+
+		  this.getData();
 		  //alert(value)
 		} catch (error) {
 		  console.log("Error retrieving data" + error);
 		}
 	  }
 
-	componentDidMount (){  
-		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
-		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
 
-			fetch('http://localhost:3000/api/categories', {
-					method: 'POST',
-					headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({
-					start_date: sDate,
-					finish_date :fDate,
-					userid: this.state.myKey
+	componentDidMount (){  
+		// const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
+		// const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
+
+		// 	fetch('http://localhost:3000/api/categories', {
+		// 			method: 'POST',
+		// 			headers: {
+		// 				'Accept': 'application/json',
+		// 				'Content-Type': 'application/json',
+		// 			},
+		// 			body: JSON.stringify({
+		// 			start_date: sDate,
+		// 			finish_date :fDate,
+		// 			userid: this.state.myKey
 					
 					
-					})
-				})     
-		.then(res => res.json())      
-		.then(res => {        
-			this.setState({          
-				data: res,  // database array        
-				error: res.error || null,                 
-			});           
-		})      
-		.catch(error => {        
-		this.setState({ error, loading: false });      
-		});  
+		// 			})
+		// 		})     
+		// .then(res => res.json())      
+		// .then(res => {        
+		// 	this.setState({          
+		// 		data: res,  // database array        
+		// 		error: res.error || null,                 
+		// 	});           
+		// })      
+		// .catch(error => {        
+		// this.setState({ error, loading: false });      
+		// });  
 	};
 	getData (){  
 		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
@@ -69,6 +79,7 @@ export default class Expenses extends Component {
 				fetch('http://localhost:3000/api/categories', {
 						method: 'POST',
 						headers: {
+								'Authorization': 'Bearer '+ this.state.token,
 								'Accept': 'application/json',
 								'Content-Type': 'application/json',
 						},
@@ -105,11 +116,11 @@ export default class Expenses extends Component {
 
 	render() {
 		return (
-			<View >
+			<View style={styles.container}>
 				<View style={{ flexDirection:'row'}}>
-				<TouchableOpacity onPress ={this.getUserID()}>  
+				{/* <TouchableOpacity onPress ={this.getUserID()}>  
 						<Text> </Text>  
-						</TouchableOpacity>
+						</TouchableOpacity> */}
 						<Text style={styles.dateStyle}> From </Text>
 						<Text style={styles.dateStyle}> To </Text>
 					</View>
@@ -219,10 +230,10 @@ export default class Expenses extends Component {
 }
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: "#f5fcff"
+		//flex: 1,
+		//justifyContent: "center",
+		//alignItems: "center",
+		backgroundColor: "#afdfed"
 	},
 	dateStyle: {
 		fontSize: 15,

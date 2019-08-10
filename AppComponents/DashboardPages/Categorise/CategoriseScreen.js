@@ -23,67 +23,41 @@ export default class Categories extends Component {
 			myKey: " ",
 			token: ""       
 		};
-
+		
+		this.getStorageData();
+		
 	}
 
-	async getUserID() {
+	async getStorageData() {
 		try {
-		  const value = await AsyncStorage.getItem('userId');
-		  this.setState({myKey: value});
-		  //alert(value)
-		} catch (error) {
-		  console.log("Error retrieving data" + error);
-		}
-	  }
-	  async getToken() {
-		try {
-		  const jwtToken = AsyncStorage.getItem(token);
-		  this.setState({token: jwtToken});
-		  //alert(value)
+		  const user_id = await AsyncStorage.getItem('userId');
+		  const jwt_token = await AsyncStorage.getItem('token');
+
+		  this.setState({myKey: user_id, token: jwt_token});
+		  this.getData();
 		} catch (error) {
 		  console.log("Error retrieving data" + error);
 		}
 	  }
 
-	 componentDidMount (){  
-		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
-		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
-		//var jwtToken  =  AsyncStorage.getItem(token);
-		
-		
-
-        fetch('http://localhost:3000/api/categories', {
-            method: 'POST',
-            headers: {
-				 'Authorization': 'Bearer '+ this.getToken(),
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-				start_date: sDate,
-				finish_date :fDate,
-				userid: this.state.myKey
-            })
-        })     
-		.then(res => res.json())      
-		.then(res => {        
-			this.setState({          
-				data: res,  // database array        
-				error: res.error || null,                 
-			});           
-		})      
-		.catch(error => {        
-		this.setState({ error, loading: false });      
-		});  
-	};
+	//  componentDidMount (){  
+	// 	 console.log('component did mount!'); 
+	// };
 	getData (){  
 		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
 		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
 
+		console.log(sDate);
+		console.log(fDate);
+		console.log(this.state.myKey);
+		console.log(this.state.token);
+
+
         fetch('http://localhost:3000/api/categories', {
             method: 'POST',
             headers: {
-                Accept: 'application/json',
+				'Authorization': 'Bearer '+ this.state.token,
+                'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -119,9 +93,19 @@ export default class Categories extends Component {
 	// }
 
 	renderItem=({item}) => { 
+		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
+		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
+		const uid = this.state.myKey;
+		
+		let payload = {
+			startDate : sDate,
+			finishDate : fDate,
+			user_id : uid
+		};
+
 		if (item._id.Categories === 'Food'){
 			return(
-				<TouchableOpacity onPress={() => this.props.navigation.navigate('FoodScreen')}>
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('FoodScreen', payload)}>
 				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
 					<View style={{flex:1}}>
 					<Text style={styles.category}> <Icon name="cutlery" size={20}/>  {item._id.Categories}  </Text>
@@ -133,7 +117,7 @@ export default class Categories extends Component {
 				)
 		} else if (item._id.Categories === 'Groceries'){
 			return(
-				<TouchableOpacity onPress={() => this.props.navigation.navigate('GroceriesScreen')}>
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('GroceriesScreen', payload)}>
 				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
 					<View style={{flex:1}}>
 						<Text style={styles.category}> <Icon name="shopping-cart" size={20}/>  {item._id.Categories}  </Text>
@@ -145,7 +129,7 @@ export default class Categories extends Component {
 				)
 		} else if (item._id.Categories === 'Shopping'){
 			return(
-				<TouchableOpacity onPress={() => this.props.navigation.navigate('ShoppingScreen')}>
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('ShoppingScreen', payload)}>
 				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
 					<View style={{flex:1}}>
 						<Text style={styles.category}> <Icon name="shopping-bag" size={20}/>  {item._id.Categories}  </Text>
@@ -157,7 +141,7 @@ export default class Categories extends Component {
 				)
 		} else if (item._id.Categories === 'Travel'){
 			return(
-				<TouchableOpacity onPress={() => this.props.navigation.navigate('TravelScreen')}>
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('TravelScreen', payload)}>
 				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
 					<View style={{flex:1}}>
 						<Text style={styles.category}> <Icon name="subway" size={20}/>  {item._id.Categories}  </Text>
@@ -169,7 +153,7 @@ export default class Categories extends Component {
 				)
 		} else if (item._id.Categories === 'Housing'){
 			return(
-				<TouchableOpacity onPress={() => this.props.navigation.navigate('HousingScreen')}>
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('HousingScreen', payload)}>
 				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
 					<View style={{flex:1}}>
 						<Text style={styles.category}> <Icon name="home" size={20}/>  {item._id.Categories}  </Text>
@@ -181,7 +165,7 @@ export default class Categories extends Component {
 				)
 		} else if (item._id.Categories === 'Bills'){
 			return(
-				<TouchableOpacity onPress={() => this.props.navigation.navigate('BillsScreen')}>
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('BillsScreen', payload)}>
 				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
 					<View style={{flex:1}}>
 						<Text style={styles.category}> <Icon name="list-alt" size={20}/>  {item._id.Categories}  </Text>
@@ -193,7 +177,7 @@ export default class Categories extends Component {
 				)
 		} else if (item._id.Categories === 'Others' &&  item.total != 0){
 			return(
-				<TouchableOpacity onPress={() => this.props.navigation.navigate('OthersScreen')}>
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('OthersScreen', payload)}>
 				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
 					<View style={{flex:1}}>
 						<Text style={styles.category}> <Icon name="list-ul" size={20}/>  {item._id.Categories}  </Text>
@@ -229,9 +213,9 @@ export default class Categories extends Component {
 		return (
 			// <ScrollView>
 				<View style={styles.container}>
-					  <TouchableOpacity onPress ={this.getUserID()}>  
+					  {/* <TouchableOpacity onPress ={this.getUserID()}>  
 						<Text> </Text>  
-						</TouchableOpacity>
+						</TouchableOpacity> */}
 
 				{/* <Text style={styles.dateStyle}> {moment(this.state.startDate).format()} </Text>	 */}
 					<View style={{ flexDirection:'row'}}>

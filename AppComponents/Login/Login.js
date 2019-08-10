@@ -24,7 +24,6 @@ export default class Login extends Component {
         }
     }
 
-
     //loginCheck 
         handleSubmit = (event) => {
         event.preventDefault();
@@ -68,8 +67,8 @@ export default class Login extends Component {
         });
         // After login it will clear the username and password field
         this.setState({
-            uname: '',
-            pwd:'',
+            username: '',
+            password:'',
         })
      
     }
@@ -90,7 +89,7 @@ export default class Login extends Component {
                             <Text style = {styles.text}> Username</Text>
                             <TextInput style = {styles.input} placeholder = "Username" 
                             onChangeText={text => this.setState({username: text})}
-                            value={this.state.uname}
+                            value={this.state.username}
                             returnKeyType = "next"
                             onSubmitEditing = {()=> this.passwordInput.focus()}
                             /> 
@@ -98,7 +97,7 @@ export default class Login extends Component {
                             <Text style = {styles.text}t> Password</Text>
                             <TextInput style = {styles.input} placeholder = "Password" 
                             onChangeText={text => this.setState({password: text})}
-                            value={this.state.pwd}
+                            value={this.state.password}
                             secureTextEntry 
                             returnKeyType = "done"
                             ref={(input) => this.passwordInput = input}
