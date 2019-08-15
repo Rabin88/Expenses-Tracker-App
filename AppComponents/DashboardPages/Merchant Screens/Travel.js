@@ -63,19 +63,12 @@ export default class Travel extends Component {
 			return(
 				<View>
 					<View style={{flex:1}}>
-						<Text style={styles.date} >  {moment(item._id.Date).format("MMM Do YY")} </Text>
+						<Text style={styles.date} >  {moment(item._id.Date).format("DD MMM YY")} </Text>
 					</View>
 					<View style={{flexDirection:'row', marginBottom: 5}}>
 						<Text style={styles.merchant} >  {item._id.Merchant} </Text>
 						<Text style={styles.creditAmount} > - £{item.total.toFixed(2)} </Text>
 					</View>
-				</View>
-			)
-		}
-		renderSeparator = () => {
-			return (
-				<View style = {{ width: '100%', borderWidth:0.2}}>
-	
 				</View>
 			)
 		}
@@ -90,7 +83,6 @@ export default class Travel extends Component {
 						data={this.state.data}   
 						renderItem={this.renderItem} 
 						keyExtractor={(item,index)=> index.toString()} 
-						ItemSeparatorComponent ={this.renderSeparator}
 					/>
 	
 				</View>

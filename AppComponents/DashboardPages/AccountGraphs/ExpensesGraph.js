@@ -14,7 +14,7 @@ export default class Expenses extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			startDate: "01-01-2019",
+			startDate: "01-04-2019",
 			FinishDate: new Date(), 
 			myKey: " ", 
 			data:[
@@ -26,6 +26,7 @@ export default class Expenses extends Component {
 		};
 
 		this.getStorageData();
+		//this.deleteEmptyCategory()
 	}
 
 	async getStorageData() {
@@ -36,42 +37,13 @@ export default class Expenses extends Component {
 		  this.setState({myKey: user_id, token: jwt_token});
 
 		  this.getData();
+		  //this.deleteEmptyCategory()
 		  //alert(value)
 		} catch (error) {
 		  console.log("Error retrieving data" + error);
 		}
 	  }
 
-
-	componentDidMount (){  
-		// const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
-		// const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
-
-		// 	fetch('http://localhost:3000/api/categories', {
-		// 			method: 'POST',
-		// 			headers: {
-		// 				'Accept': 'application/json',
-		// 				'Content-Type': 'application/json',
-		// 			},
-		// 			body: JSON.stringify({
-		// 			start_date: sDate,
-		// 			finish_date :fDate,
-		// 			userid: this.state.myKey
-					
-					
-		// 			})
-		// 		})     
-		// .then(res => res.json())      
-		// .then(res => {        
-		// 	this.setState({          
-		// 		data: res,  // database array        
-		// 		error: res.error || null,                 
-		// 	});           
-		// })      
-		// .catch(error => {        
-		// this.setState({ error, loading: false });      
-		// });  
-	};
 	getData (){  
 		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
 		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
@@ -113,12 +85,56 @@ export default class Expenses extends Component {
 		total.toFixed(2)
 		)
 	}
+	// getLabels = () => {
+	// 	// let label =[]
+	// 	// let labelSeries = this.state.data.map(item => item._id.Categories)
+	// 	// let labelString = labelSeries.toString()
+	// 	// label.push(labelString)
+
+	// 	let colorList =["tomato","orange", "gold","cyan", "#bd8cbd", "#68bab3", "#9997d1"]
+		
+	// 	for(let i = 0; i<this.state.data.length; i++){
+			
+	// 		if(this.state.data[i]._id.Categories === 'Food'){
+	// 			return (
+	// 				<View>
+	// 				<View style={styles.rectangle}></View>
+	// 				<Text>food</Text>
+	// 				</View>
+	// 			)
+	// 		} 
+	// 		if(this.state.data[i]._id.Categories === 'Others'){
+	// 			return (
+	// 				<View>
+	// 				<View style={styles.rectangle}></View>
+	// 				<Text>food</Text>
+	// 				</View>
+	// 			)
+	// 		} 
+	// 		else {
+	// 			return (
+	// 				<View>
+	// 				{/* <View style={styles.rectangle}></View> */}
+	// 				<Text>Empty</Text>
+	// 				</View>
+	// 				)
+	// 			}
+	// 		}
+	// }
 
 	render() {
+
+		// this.state.data.forEach((element) => {
+		// 	if(element._id.Categories === 'Others') {
+		// 	 return this.state.data.splice(element._id.Categories,1)
+		// 	}
+		// })
+
+		
 		return (
 			<View style={styles.container}>
-				<View style={{ flexDirection:'row'}}>
-				{/* <TouchableOpacity onPress ={this.getUserID()}>  
+					<View style={{ flexDirection:'row'}}>
+					{/* <TouchableOpacity onPress ={this.getUserID()}>  
 						<Text> </Text>  
 						</TouchableOpacity> */}
 						<Text style={styles.dateStyle}> From </Text>
@@ -182,6 +198,9 @@ export default class Expenses extends Component {
 					<Button onPress={() => this.getData()} color = 'white' title="Set"/>
 					</TouchableOpacity>
 
+					{/* {this.getLabels()} */}
+
+				<View>
 				<Svg width={380} height={600}>
 					<VictoryPie 
 						standalone={false}
@@ -218,19 +237,38 @@ export default class Expenses extends Component {
 						itemsPerRow={3}
 						gutter={20}
 						//style={{ border: { stroke: "black" } }}
-						colorScale={["tomato","orange", "gold","cyan", "#bd8cbd", "#68bab3", "#9997d1" ]}
-						//data={this.state.data}
-						_id ={(item) => `${item._id.Categories}`}
+						colorScale={["tomato","orange", "gold","cyan", "#bd8cbd", "#68bab3", "#9997d1"]}
+						data={this.state.data}
+						name = "Categories"
+						//_id ={(item) => `${item._id.Categories}`}
 					
 						/> */}
+
+						{/* <VictoryLabel
+						//textAnchor="middle"
+						style={{ fontSize:10}}
+						x={40} y={350}
+						colorScale={["tomato","orange", "gold","cyan", "#bd8cbd", "#68bab3", "#9997d1"]}
+						text={`Labels`}
+						text = {this.getLabels}
+						text={`${this.getLabels()}`}
+
+					/> */}
+
 				</Svg>
+				</View>
+
+                {/* <TouchableOpacity style = {styles.categoriesButton} > 
+                    <Button onPress={() => this.props.navigation.navigate('CategoriesPage')} color = 'white'  title="Go to Categories"/>
+                </TouchableOpacity> */}
+			
 			</View>
 		)
 	}
 }
 const styles = StyleSheet.create({
 	container: {
-		//flex: 1,
+		flex: 1,
 		//justifyContent: "center",
 		//alignItems: "center",
 		backgroundColor: "#afdfed"
@@ -253,4 +291,20 @@ const styles = StyleSheet.create({
 		borderColor: '#fff',
 		alignSelf: 'center',
 	},
+	// rectangle: {
+	// 	height: 10,
+	// 	width: 10,
+	// 	backgroundColor: 'salmon',
+	//   },
+
+	// categoriesButton:{
+	// 	width: 300,
+	// 	marginTop:30,
+	// 	marginBottom:10,
+	// 	backgroundColor:'#179bbd',
+	// 	borderRadius:40,
+	// 	borderWidth: 1,
+	// 	borderColor: '#fff',
+	// 	alignSelf: 'center',
+	// },
 });

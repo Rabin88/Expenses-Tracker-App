@@ -63,7 +63,7 @@ export default class Food extends Component {
 			return(
 				<View>
 					<View style={{flex:1}}>
-						<Text style={styles.date} >  {moment(item._id.Date).format("MMM Do YY")} </Text>
+						<Text style={styles.date} >  {moment(item._id.Date).format("DD MMM YY")} </Text>
 					</View>
 					<View style={{flexDirection:'row', marginBottom: 5}}>
 						<Text style={styles.merchant} >  {item._id.Merchant} </Text>
@@ -72,14 +72,7 @@ export default class Food extends Component {
 				</View>
 			)
 		}
-		renderSeparator = () => {
-			return (
-				<View style = {{ width: '100%', borderWidth:0.2}}>
-	
-				</View>
-			)
-		}
-		 
+ 
 		render() {
 			return (
 				<View style={styles.container}>
@@ -90,7 +83,6 @@ export default class Food extends Component {
 						data={this.state.data}   
 						renderItem={this.renderItem} 
 						keyExtractor={(item,index)=> index.toString()} 
-						ItemSeparatorComponent ={this.renderSeparator}
 					/>
 	
 				</View>

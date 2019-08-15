@@ -14,6 +14,7 @@ import { createStackNavigator,
 import {HomeNavigation, 
 		chartNaviagtion, 
 		setBudgetNaviagtion, 
+		BudgetForecastNavigation,
 		settingsNavigation} from './AppComponents/Navigations/stackNavigator'
 import Login from './AppComponents/Login/Login';
 import Signup from './AppComponents/Signup/Signup';
@@ -30,6 +31,7 @@ const BottomTab = createBottomTabNavigator(
 		Home: HomeNavigation,
 		Chart: chartNaviagtion,
 		SetBudget: setBudgetNaviagtion,
+		Forecast: BudgetForecastNavigation,
 		Settings: settingsNavigation ,	
 	},
 	{
@@ -44,11 +46,15 @@ const BottomTab = createBottomTabNavigator(
 					break;
 					
 					case "Chart":
-					icon = <Icon name="line-chart" size={25} color={tintColor} />
+					icon = <Icon name="pie-chart" size={25} color={tintColor} />
 					break;
 
 					case "SetBudget":
 					icon = <Icon name="plus-circle" size={25} color={tintColor} />
+					break;
+
+					case "Forecast":
+					icon = <Icon name="line-chart" size={25} color={tintColor} />
 					break;
 					
 					case "Settings":

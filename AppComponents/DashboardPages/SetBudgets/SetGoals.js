@@ -196,13 +196,14 @@ export default class SetBudgets extends Component {
 		
         this.state.data.forEach(function (elem) {
 			let spentAmount = this.findCategorySpentAmount(elem.categories).toFixed(2);
+			let setAmount = elem.amount.toFixed(2)
 			console.log(spentAmount);
             budgetList.push(
                 <View key={count++}>
 					<View style={{flex:1,flexDirection: 'row'}}>
 						<Text style= {{flex: 1,fontSize:15, fontWeight: 'bold', marginBottom:5, marginLeft:10,}}>{elem.categories}</Text>
 						<Text style= {{flex: 1,fontSize:13, fontWeight: 'bold', textAlign: 'right', color: '#59108D', marginBottom: 5,marginRight:5}}> 
-						Current Spending £{spentAmount}</Text>
+						 Set amount £{setAmount}</Text>
 					</View>
 					<ProgressBarAnimated style = {{marginBottom:20, marginTop: 10}}
 						width={barWidth}
@@ -215,7 +216,8 @@ export default class SetBudgets extends Component {
 							alert('Yay! Set Target Completed!');
 						}}
 					/>
-					<Text style={styles.label}> £{spentAmount} remaning of £{elem.amount}</Text>
+					{/* <Text style={styles.label}> £{spentAmount} remaning of £{elem.amount}</Text> */}
+					<Text style={styles.label}> Current Spending £{spentAmount} </Text>
 				</View>
             );
         }.bind(this));
@@ -236,6 +238,7 @@ export default class SetBudgets extends Component {
 			<View style={styles.container}>
 				<ScrollView>
 					<Text style ={{fontSize:15, color:'black', marginBottom:20, textAlign:'center'}}> Set Budgets Category </Text>
+					
 					{budgetList}
 
 					<TouchableHighlight style= {styles.button}>

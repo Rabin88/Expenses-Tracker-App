@@ -123,13 +123,15 @@ export default class Signup extends Component {
                             onSubmitEditing = {()=> this.passwordInput.focus()}
                             />
                            
-                            <TextInput style = {styles.input} placeholder = "Password min. 5 characters" 
+                            <TextInput style = {styles.passwordstyle} placeholder = "Password min. 5 characters" 
                             onChangeText={(text) => this.validation(text, 'Password')}
                             secureTextEntry 
                             returnKeyType = "next"
                             ref={(input) => this.passwordInput = input}
                             onSubmitEditing = {()=> this.repasswordInput.focus()}
                             />
+                            <Text style={styles.passwordText}> Password must contain at least 1 letter and number</Text>
+                            
 
                             <TextInput style = {styles.input} placeholder = "Re-type Password" 
                             onChangeText={(text) => this.validation(text, 'RetypePassword')}
@@ -146,12 +148,14 @@ export default class Signup extends Component {
                             /> 
 
                             <TouchableOpacity style = {styles.buttonContainer} onPress={this.handleSubmit}> 
-                            <Button onPress={this.handleSubmit} color = 'white' title="SUBMIT"/>
+                            <Button onPress={this.handleSubmit} color = 'white' title="SUBMIT" testID="submitButton"/>
                             </TouchableOpacity>  
                         
-                            <Button onPress={() => this.props.navigation.navigate('LoginPage')} 
+                            <Button onPress={() => this.props.navigation.navigate('LoginPage') } 
+                            id="submitButton"
                             color ='white'
-                            title="Already Registered? Login"/>
+                            title="Already Registered? Login"
+                            testID="submitButton"/>
                             {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('LoginPage')}>
                             <Text> Already Registered? Login </Text>
                             </TouchableOpacity> */}
@@ -202,6 +206,17 @@ const styles = StyleSheet.create ( {
         marginBottom: 30,
         color : 'white'
     },
+    passwordstyle:{
+        height: 40,
+        fontSize: 20,
+        backgroundColor : 'rgba(255,255,255,0.8)',
+        // marginBottom: 20,
+        padding: 8,
+    },
+    passwordText:{
+        fontSize: 13,
+        marginBottom: 10
+    }
 });
 
 
