@@ -203,7 +203,7 @@ export default class SetBudgets extends Component {
 					<View style={{flex:1,flexDirection: 'row'}}>
 						<Text style= {{flex: 1,fontSize:15, fontWeight: 'bold', marginBottom:5, marginLeft:10,}}>{elem.categories}</Text>
 						<Text style= {{flex: 1,fontSize:13, fontWeight: 'bold', textAlign: 'right', color: '#59108D', marginBottom: 5,marginRight:5}}> 
-						 Set amount £{setAmount}</Text>
+						 Target Amount £{setAmount}</Text>
 					</View>
 					<ProgressBarAnimated style = {{marginBottom:20, marginTop: 10}}
 						width={barWidth}

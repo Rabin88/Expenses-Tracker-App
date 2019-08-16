@@ -103,7 +103,7 @@ export default class Signup extends Component {
                         
                             <Text style={styles.heading}> Sign Up</Text>
                             
-                            <TextInput style = {styles.input} placeholder = "Username" 
+                            <TextInput style = {styles.input} placeholder = "Username min 4 characters" 
                             onChangeText={(text) => this.validation(text, 'username') }
                             returnKeyType = "next"
                             onSubmitEditing = {()=> this.firstNameInput.focus()}
@@ -123,7 +123,7 @@ export default class Signup extends Component {
                             onSubmitEditing = {()=> this.passwordInput.focus()}
                             />
                            
-                            <TextInput style = {styles.passwordstyle} placeholder = "Password min. 5 characters" 
+                            <TextInput style = {styles.passwordstyle} placeholder = "Password min 5 characters" 
                             onChangeText={(text) => this.validation(text, 'Password')}
                             secureTextEntry 
                             returnKeyType = "next"
@@ -215,7 +215,9 @@ const styles = StyleSheet.create ( {
     },
     passwordText:{
         fontSize: 13,
-        marginBottom: 10
+        marginBottom: 10,
+        fontStyle: 'italic'
+        //color: '#109bad'
     }
 });
 
