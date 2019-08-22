@@ -37,7 +37,7 @@ export default class Signup extends Component {
         };
         console.log(data);
         // Client Send the reequest to Server localhost:3000 as a JSON object
-        fetch('http://localhost:3000/api/signup', {
+        fetch('https://weareexpensetracker.herokuapp.com/api/signup', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -49,14 +49,20 @@ export default class Signup extends Component {
         .then (async (result) => {
             let responseJson = await result.json();
             console.log(responseJson);
-            
             if(responseJson.error){
                 alert('Usename is already taken');
+                return;
+            }
+            if(responseJson.emailError){
+                alert('Email already exist');
+                return;
             }
             if(responseJson.success){
                 this.props.navigation.navigate('LoginPage');
+                return;
             }else{
                 alert('Register unsuccessfull. Please check your inputs');
+                return;
             }
 			
         })

@@ -38,7 +38,7 @@ export default class Shopping extends Component {
 
 		let startDate = encodeURIComponent(this.state.startDate);
 		let finishDate = encodeURIComponent(this.state.FinishDate);
-		  const url = `http://localhost:3000/api/categories/merchant?category=Shopping&sdate=${startDate}&fdate=${finishDate}&uid=${this.state.myKey}`;
+		  const url = `https://weareexpensetracker.herokuapp.com/api/categories/merchant?category=Shopping&sdate=${startDate}&fdate=${finishDate}&uid=${this.state.myKey}`;
 			console.log('token pre call: ', jwt_token);
 		    fetch(url, {
 				headers: {

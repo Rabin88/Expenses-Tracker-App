@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Image, FlatList, TouchableOpacity, AsyncStorage} from 'react-native';
+import { StyleSheet, Text, View, Button, Image, FlatList, TouchableOpacity, AsyncStorage, ScrollView} from 'react-native';
 import moment from 'moment';
+
 
 export default class Dashboard extends Component {
 	static navigationOptions = {
@@ -37,7 +38,7 @@ export default class Dashboard extends Component {
 		 getData(){  
 		 let user_id = this.state.myKey;
 			  
-		 fetch(`http://localhost:3000/api/totalbalance?user_id=${user_id}`, {
+		 fetch(`https://weareexpensetracker.herokuapp.com/api/totalbalance?user_id=${user_id}`, {
 			method: 'GET',
 			headers: {
 				 'Authorization': 'Bearer '+ this.state.token,
@@ -59,7 +60,7 @@ export default class Dashboard extends Component {
 		   }); 
 		}
 
-		//   const url = `http://localhost:3000/api/balance`;
+		//   const url = `https://weareexpensetracker.herokuapp.com/api/balance`;
 				
 		//     fetch(url, {
 		// 		method: 'GET',
@@ -98,7 +99,7 @@ export default class Dashboard extends Component {
 			//console.log(sDate, fDate);
 	
 	
-			fetch('http://localhost:3000/api/expenses', {
+			fetch('https://weareexpensetracker.herokuapp.com/api/expenses', {
 				method: 'POST',
 				headers: {
 					'Authorization': 'Bearer '+ this.state.token,
@@ -161,7 +162,9 @@ export default class Dashboard extends Component {
 	render() {
 		let currentbalance = parseFloat(this.state.totalBalance.balance)
 		return (
+			
 			<View style={styles.container}>
+				<ScrollView>
 				<View>
 				<Image  style = {{ width: 200, height: 200, alignSelf: 'center', marginTop: 30, marginBottom:10, }}
 					source={require('/Users/rabinpun/Desktop/ReactNative/Finance/assets/logo.png')}
@@ -183,7 +186,9 @@ export default class Dashboard extends Component {
 				<Button onPress={() => this.props.navigation.navigate('CategoriesPage')} color = 'white' title="View Transactions"/>
 				</TouchableOpacity> 
 				</View>
+				</ScrollView>
 			</View>
+			
 		)
 	}
 }

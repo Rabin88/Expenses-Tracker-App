@@ -58,7 +58,7 @@ export default class SetBudgets extends Component {
 		
         console.log(data);
         // Client Send the reequest to Server localhost:3000 as a JSON object
-        fetch('http://localhost:3000/api/budget', {
+        fetch('https://weareexpensetracker.herokuapp.com/api/budget', {
             method: 'POST',
             headers: {
 				'Authorization': 'Bearer '+ this.state.token,
@@ -83,7 +83,7 @@ export default class SetBudgets extends Component {
 
 		let user_id = this.state.myKey;
 
-        fetch(`http://localhost:3000/api/budget?user_id=${user_id}`, {
+        fetch(`https://weareexpensetracker.herokuapp.com/api/budget?user_id=${user_id}`, {
             headers: {
 				'Authorization': 'Bearer '+ this.state.token,
                 'Accept': 'application/json',
@@ -136,7 +136,7 @@ export default class SetBudgets extends Component {
 		console.log(sDate, fDate);
 
 
-        fetch('http://localhost:3000/api/categories', {
+        fetch('https://weareexpensetracker.herokuapp.com/api/categories', {
             method: 'POST',
             headers: {
 				'Authorization': 'Bearer '+ this.state.token,
@@ -281,7 +281,7 @@ export default class SetBudgets extends Component {
 									totalWidth={200}
 									totalHeight={60}
 									minValue={5}
-									maxValue={200}
+									maxValue={9999}
 									onLimitReached={(value)=> {if (value == 0) {return; } else{
 										alert('Max Limit Reached')}
 									}}

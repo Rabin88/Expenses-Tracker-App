@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, ScrollView } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, AsyncStorage} from 'react-native'
 import { VictoryLine, VictoryChart, VictoryTheme } from "victory-native";
 
 export default class BudgetForecastScreeen extends Component {
@@ -8,18 +8,33 @@ export default class BudgetForecastScreeen extends Component {
 		title: 'Budget Forecast',
 		headerStyle: {backgroundColor: '#179bbd'},
 		headerTitleStyle: {color:'white'}
-		};
-		constructor(props) {
+	};
+	constructor(props) {
 		super(props);
 		this.state = { 
+			myKey: '',
+			token: '', 
 			data:[
 				{ _id: 'Jan', expenses: 0 },
 				{ _id: 'Feb', expenses: 0 },
 				],
 				// regdata:[]
 		};
-		this.getData()
+		this.getStorageData()
 	}
+
+	async getStorageData() {
+		try {
+		  const user_id = await AsyncStorage.getItem('userId');
+		  const jwt_token = await AsyncStorage.getItem('token');
+			
+		  this.setState({myKey: user_id, token: jwt_token})
+		  this.getData();
+		} catch (error) {
+		  //console.log("Error retrieving data" + error);
+		  "Error retrieving data" + error;
+		}
+	  }
 	
 	// 	displayData() {
 	// 	this.setState({
@@ -36,10 +51,11 @@ export default class BudgetForecastScreeen extends Component {
 	// 	})
 	// }
 	getData(){  
-						
-		fetch('http://localhost:3000/api/monthlyBudget', {
+		let user_id = this.state.myKey;
+		fetch(`https://weareexpensetracker.herokuapp.com/api/monthlyBudget?user_id=${user_id}`, {
 				method: 'GET',
 				headers: {
+					'Authorization': 'Bearer '+ this.state.token,
 					'Accept': 'application/json',
 					'Content-Type': 'application/json',
 				},
@@ -271,10 +287,10 @@ export default class BudgetForecastScreeen extends Component {
 						<Text style={styles.amount}> £{this.linearRegression(databaseData).toFixed(2)}</Text>
 					</View>
 
-					<View style ={{flexDirection:'row',borderBottomColor: '#585759', borderBottomWidth:0.5}}>
+					{/* <View style ={{flexDirection:'row',borderBottomColor: '#585759', borderBottomWidth:0.5}}>
 						<Text style={styles.text}> Average income </Text>
 						<Text style={styles.amount}> £{incomeAverage.toFixed(2)}</Text>
-					</View>
+					</View> */}
 
 					{/* <View style ={{flexDirection:'row',borderBottomColor: '#585759', borderBottomWidth:0.5}}>
 						<Text style={styles.text}> Average expense </Text>

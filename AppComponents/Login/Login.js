@@ -37,7 +37,7 @@ export default class Login extends Component {
 			return;
         }
 
-        fetch('http://localhost:3000/api/login', {
+        fetch('https://weareexpensetracker.herokuapp.com/api/login', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

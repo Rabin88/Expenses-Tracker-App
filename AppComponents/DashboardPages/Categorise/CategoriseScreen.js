@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, ScrollView,  AsyncStorage} from 'react-native'
+import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, ScrollView,  AsyncStorage, Alert} from 'react-native'
 import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
@@ -17,7 +17,7 @@ export default class Categories extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			startDate: "01-01-2019",
+			startDate: "01-04-2019",
 			FinishDate: new Date(),      
 			data: [] ,
 			myKey: " ",
@@ -53,7 +53,7 @@ export default class Categories extends Component {
 		console.log(this.state.token);
 
 
-        fetch('http://localhost:3000/api/categories', {
+        fetch('https://weareexpensetracker.herokuapp.com/api/categories', {
             method: 'POST',
             headers: {
 				'Authorization': 'Bearer '+ this.state.token,

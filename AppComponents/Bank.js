@@ -41,6 +41,7 @@ export default class Bank extends Component {
         
     }
 
+
     getExpensesData (){  
         var dateObj = new Date();
         var month = dateObj.getUTCMonth() + 1; //months from 1-12
@@ -57,7 +58,7 @@ export default class Bank extends Component {
         //console.log(sDate, fDate);
 
 
-        fetch('http://localhost:3000/api/expenses', {
+        fetch('https://weareexpensetracker.herokuapp.com/api/expenses', {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer '+ this.state.token,
