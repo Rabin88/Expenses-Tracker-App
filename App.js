@@ -15,10 +15,10 @@ import {HomeNavigation,
 		chartNaviagtion, 
 		setBudgetNaviagtion, 
 		BudgetForecastNavigation,
-		settingsNavigation} from './AppComponents/Navigations/stackNavigator'
-import Login from './AppComponents/Login/Login';
-import Signup from './AppComponents/Signup/Signup';
-import Bank from './AppComponents/Bank';
+		settingsNavigation} from './AppComponents/stackNavigator'
+import Login from './AppComponents/Login';
+import Signup from './AppComponents/Signup';
+import BankScreen from './AppComponents/BankScreen';
 
 export default class App extends Component {
 	render() {
@@ -78,7 +78,7 @@ const BottomTab = createBottomTabNavigator(
 const RootStack = createStackNavigator (
 	{LoginPage :  Login,
 	SignupPage : Signup,
-	BankPage: Bank,
+	BankPage: BankScreen,
 		Tabs: {
 			screen: BottomTab,
 			navigationOptions:{

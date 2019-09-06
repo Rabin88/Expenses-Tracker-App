@@ -5,7 +5,7 @@ import Svg from 'react-native-svg'
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
 
-export default class Expenses extends Component {
+export default class PieChartScreen extends Component {
 	static navigationOptions = {
 		title : 'Expense',
 		headerStyle: {backgroundColor: '#179bbd'},

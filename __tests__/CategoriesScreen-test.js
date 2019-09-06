@@ -1,10 +1,10 @@
-import CategoriseScreen from '../AppComponents/DashboardPages/Categorise/CategoriseScreen'
+import CategoriseScreen from '../AppComponents/MainScreens/CategoriseScreen'
 import React from 'react';
 import 'react-native';
 import renderer from 'react-test-renderer'
 
     //CategoriseScreen Page API async/await mock test
-jest.mock('../AppComponents/DashboardPages/Categorise/CategoriseScreen', () => {
+jest.mock('../AppComponents/MainScreens/CategoriseScreen', () => {
     return class{
         async getData() {
             const response = await new Promise ((resolve) => {

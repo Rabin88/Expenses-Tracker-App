@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, StyleSheet, Button, TouchableOpacity, AsyncStorage } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class SettingsPage extends Component {
+export default class SettingsScreen extends Component {
 
    static navigationOptions = {
 		title: 'Settings',

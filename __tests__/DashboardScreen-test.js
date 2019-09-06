@@ -1,4 +1,4 @@
-import Dashboard from '../AppComponents/Homepage/Dashboard'
+import DashboardScreen from '../AppComponents/MainScreens/DashboardScreen'
 import React from 'react';
 import 'react-native';
 import renderer from 'react-test-renderer'
@@ -11,7 +11,7 @@ configure({ adapter: new Adapter() });
 
 
     // Dashboard Page getData API async/await mock test
-jest.mock('../AppComponents/Homepage/Dashboard', () => {
+jest.mock('../AppComponents/MainScreens/DashboardScreen', () => {
     return class{
         async getData() {
             const response = await new Promise ((resolve) => {
@@ -27,7 +27,7 @@ jest.mock('../AppComponents/Homepage/Dashboard', () => {
 describe ('Dashboar API mock test', () => {
     test('dasboard mock', async () => {
         expect.assertions(1);
-        const dasboardData = await new Dashboard().getData();
+        const dasboardData = await new DashboardScreen().getData();
         //console.log(dasboardData)
 
         expect(dasboardData).toEqual({id:123, name: 'David'})

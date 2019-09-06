@@ -1,4 +1,4 @@
-import Login from '../AppComponents/Login/Login'
+import Login from '../AppComponents/Login'
 import React from 'react';
 import 'react-native';
 

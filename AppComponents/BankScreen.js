@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Text, View, Button, TouchableOpacity, StyleSheet, Image, AsyncStorage, Alert} from 'react-native'
+import { Text, View, Button, TouchableOpacity, StyleSheet, Image, AsyncStorage, Linking} from 'react-native'
 import moment from 'moment';
 
-export default class Bank extends Component {
+export default class BankScreen extends Component {
     static navigationOptions = {
         headerStyle: {backgroundColor: '#00a8ff'},
     };
@@ -88,18 +88,18 @@ export default class Bank extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Image  style = {{ width: 200, height: 200, alignSelf: 'center', marginTop: 50, marginBottom:10, }}
+                <Image  style = {{ width: 200, height: 200, alignSelf: 'center', marginTop: 50, marginBottom:25, }}
 					source={require('/Users/rabinpun/Desktop/ReactNative/Finance/assets/bank-icon-png-10.jpg')}
 					/>
-                <Text style={styles.text}> Select Bank </Text>
-                <Text style={styles.bankList}> Lloyds </Text>
-                <Text style={styles.bankList}> HSBC </Text>
-                <Text style={styles.bankList}> Halifax </Text>
-                <Text style={styles.bankList}> Barclays </Text>
+        
                 <TouchableOpacity style = {styles.buttonContainer}> 
                     <Button color = 'white' onPress={() => this.navigateToHome()} 
-                    title = "Connect to Bank"/>
+                    title = "Get Transaction Data"/>
                 </TouchableOpacity>
+
+                <Text style={styles.url}> For more information about Open Banking, Visit </Text>
+                <Text style={{color: '#a836d1', textAlign: 'center', fontSize: 18,textDecorationLine: 'underline'}}
+                onPress={() => Linking.openURL('https://www.openbanking.org.uk')}> www.openbanking.org.uk </Text>
             </View>
         )
     }
@@ -114,7 +114,7 @@ const styles = StyleSheet.create ( {
     buttonContainer: {
         backgroundColor: 'green',
         marginTop: 10,
-        marginBottom: 20
+        marginBottom: 30
 
     },
     text: {
@@ -123,7 +123,7 @@ const styles = StyleSheet.create ( {
         marginBottom: 10,
         textAlign: 'center'
     },
-    bankList: {
+    url: {
         fontSize: 15,
         marginBottom: 5,
         textAlign: 'center'  

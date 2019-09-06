@@ -6,7 +6,7 @@ import ModalSelector from 'react-native-modal-selector'
 import moment from 'moment';
 
 
-export default class SetBudgets extends Component {
+export default class SetBudgetScreen extends Component {
 	static navigationOptions = {
 		title: 'Set Budgets',
 		headerStyle: {backgroundColor: '#179bbd'},
@@ -213,7 +213,7 @@ export default class SetBudgets extends Component {
 						borderColor = 'orange'
 						backgroundColor='#6CC644'
 						onComplete={() => {
-							alert('Yay! Set Target Completed!');
+							alert('You have exceeded your target amonut for this month!');
 						}}
 					/>
 					{/* <Text style={styles.label}> £{spentAmount} remaning of £{elem.amount}</Text> */}

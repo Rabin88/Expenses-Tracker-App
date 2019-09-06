@@ -7,7 +7,7 @@ import moment from 'moment';
 
 //import { ScrollView } from 'react-native-gesture-handler';
 
-export default class Categories extends Component {
+export default class CategorieScreen extends Component {
 	static navigationOptions = {
 		title: 'Categories',
 		headerStyle: {backgroundColor: '#179bbd'},

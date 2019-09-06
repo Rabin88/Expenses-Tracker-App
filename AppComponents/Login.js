@@ -84,7 +84,7 @@ export default class Login extends Component {
                         </View>
                         <View >
                         
-                            <Text style={styles.heading}> Expense Tracker</Text>
+                            <Text style={styles.heading}> Xpense Tracco</Text>
                             
                         
                             <Text style = {styles.text}> Username</Text>

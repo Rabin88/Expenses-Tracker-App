@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, Image, FlatList, TouchableOpacity, Asyn
 import moment from 'moment';
 
 
-export default class Dashboard extends Component {
+export default class DashboardScreen extends Component {
 	static navigationOptions = {
 		title:'Dashboard',
 		headerStyle: {backgroundColor: '#179bbd'},

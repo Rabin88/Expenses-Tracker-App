@@ -1,5 +1,5 @@
-import Signup from '../AppComponents/Signup/Signup'
-import Login from '../AppComponents/Login/Login'
+import Signup from '../AppComponents/Signup'
+import Login from '../AppComponents/Login'
 import React from 'react';
 import 'react-native'; 
 import renderer from 'react-test-renderer'
