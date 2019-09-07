@@ -1,3 +1,10 @@
+/**
+ * This is a categoriseScreen that categorise the user's transaction into six different categories which are
+ * Food, Shopping, Housing, Bills, Groceries, Travel and Others. All the categories are displayed in a list view.
+ * It display the number of transctions and expense amount for each category. It is sorted with highest amount on the top
+ * with two decimal places. Date selection was build using 'react-native-datepicker' library.
+ */
+
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, ScrollView,  AsyncStorage, Alert} from 'react-native'
 import DatePicker from 'react-native-datepicker';
@@ -27,7 +34,7 @@ export default class CategorieScreen extends Component {
 		this.getStorageData();
 		
 	}
-
+	// Function to get stored token and userID.
 	async getStorageData() {
 		try {
 		  const user_id = await AsyncStorage.getItem('userId');
@@ -40,9 +47,7 @@ export default class CategorieScreen extends Component {
 		}
 	  }
 
-	//  componentDidMount (){  
-	// 	 console.log('component did mount!'); 
-	// };
+	// Function to get users tansactions categories data from the database.
 	getData (){  
 		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
 		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
@@ -82,16 +87,7 @@ export default class CategorieScreen extends Component {
 		this.setState({ error});      
 		});  
 	};
-
-	// renderItem=({item}) => { 
-	// 	return(
-	// 		<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
-	// 			<Text style={styles.category} > {item._id.Categories} </Text>
-	// 			<Text style={styles.amount} > -£{item.total.toLocaleString(undefined, {maximumFractionDigits:2})} </Text>
-	// 		</View>
-	// 		)
-	// }
-
+	// Function to display categories in a list view
 	renderItem=({item}) => { 
 		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
 		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
@@ -192,27 +188,13 @@ export default class CategorieScreen extends Component {
 		} 
 		else {
 			return;
-		// return(
-		// 	<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
-		// 		<Text style={styles.category} > {item._id.Categories} </Text>
-		// 		<Text style={styles.amount} > -£{item.total.toLocaleString(undefined, {maximumFractionDigits:2})} </Text>
-		// 	</View>
-		// 	)
 		 }
 	}
-
-	// renderSeparator = () => {
-	// 	return (
-	// 		<View style = {{height: 2, width: '100%',color: 'black'}}></View>
-	// 	)
-	// }
 
 	render() {
 		return (
 			// <ScrollView>
 				<View style={styles.container}>
-
-				{/* <Text style={styles.dateStyle}> {moment(this.state.startDate).format()} </Text>	 */}
 					<View style={{ flexDirection:'row'}}>
 						<Text style={styles.dateStyle}> From </Text>
 						<Text style={styles.dateStyle}> To </Text>
@@ -280,7 +262,6 @@ export default class CategorieScreen extends Component {
 						data={this.state.data}   
 						renderItem={this.renderItem} 
 						keyExtractor={(item,index)=> item._id.Categories} 
-						//ItemSeparatorComponent ={this.renderSeparator}
 					/>		
 				</View>
 			// </ScrollView>
@@ -306,8 +287,6 @@ const styles = StyleSheet.create({
 		marginTop: 30,
 	},
 	category: {
-		//flex:1,
-		//flexDirection: 'column',
 		backgroundColor: '#e1e8e5',
 		fontSize: 20,
 		padding: 15,

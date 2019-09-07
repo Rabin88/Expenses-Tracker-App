@@ -1,8 +1,16 @@
+/**
+ * This is a PieChartScreen class that displays the categories in a pie-chart with percentage.
+ * It also display total expenses in the center of the pie chart. In addition pie-chart is animated. 
+ * To create piechart VictoryPie is used which was installed from victory-native library.
+ * Similarly, for selecting date, react-native-datepicker library is used.
+ * To change the date in MongoDB format, moment library is used.
+ * 
+ */
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Button, TouchableOpacity, AsyncStorage} from 'react-native'
 import { VictoryLabel, VictoryPie, VictoryLegend } from "victory-native";
-import Svg from 'react-native-svg'
-import DatePicker from 'react-native-datepicker';
+import Svg from 'react-native-svg' 
+import DatePicker from 'react-native-datepicker'; 
 import moment from 'moment';
 
 export default class PieChartScreen extends Component {
@@ -26,9 +34,10 @@ export default class PieChartScreen extends Component {
 		};
 
 		this.getStorageData();
-		//this.deleteEmptyCategory()
+		
 	}
 
+	// Function to get stored token and userID.
 	async getStorageData() {
 		try {
 		  const user_id = await AsyncStorage.getItem('userId');
@@ -37,13 +46,11 @@ export default class PieChartScreen extends Component {
 		  this.setState({myKey: user_id, token: jwt_token});
 
 		  this.getData();
-		  //this.deleteEmptyCategory()
-		  //alert(value)
 		} catch (error) {
 		  console.log("Error retrieving data" + error);
 		}
 	  }
-
+	// Function to get tranascation categories data from the database.
 	getData (){  
 		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
 		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
@@ -77,6 +84,7 @@ export default class PieChartScreen extends Component {
 		this.setState({ error});      
 		});  
 	};
+	// Function to calculate total expense amount
 	getTotal = () => {
 	var total = this.state.data.reduce( function(accumulator, value) {
 		return accumulator + value.total;
@@ -85,58 +93,11 @@ export default class PieChartScreen extends Component {
 		total.toFixed(2)
 		)
 	}
-	// getLabels = () => {
-	// 	// let label =[]
-	// 	// let labelSeries = this.state.data.map(item => item._id.Categories)
-	// 	// let labelString = labelSeries.toString()
-	// 	// label.push(labelString)
-
-	// 	let colorList =["tomato","orange", "gold","cyan", "#bd8cbd", "#68bab3", "#9997d1"]
-		
-	// 	for(let i = 0; i<this.state.data.length; i++){
-			
-	// 		if(this.state.data[i]._id.Categories === 'Food'){
-	// 			return (
-	// 				<View>
-	// 				<View style={styles.rectangle}></View>
-	// 				<Text>food</Text>
-	// 				</View>
-	// 			)
-	// 		} 
-	// 		if(this.state.data[i]._id.Categories === 'Others'){
-	// 			return (
-	// 				<View>
-	// 				<View style={styles.rectangle}></View>
-	// 				<Text>food</Text>
-	// 				</View>
-	// 			)
-	// 		} 
-	// 		else {
-	// 			return (
-	// 				<View>
-	// 				{/* <View style={styles.rectangle}></View> */}
-	// 				<Text>Empty</Text>
-	// 				</View>
-	// 				)
-	// 			}
-	// 		}
-	// }
-
 	render() {
 
-		// this.state.data.forEach((element) => {
-		// 	if(element._id.Categories === 'Others') {
-		// 	 return this.state.data.splice(element._id.Categories,1)
-		// 	}
-		// })
-
-		
 		return (
 			<View style={styles.container}>
 					<View style={{ flexDirection:'row'}}>
-					{/* <TouchableOpacity onPress ={this.getUserID()}>  
-						<Text> </Text>  
-						</TouchableOpacity> */}
 						<Text style={styles.dateStyle}> From </Text>
 						<Text style={styles.dateStyle}> To </Text>
 					</View>
@@ -198,7 +159,6 @@ export default class PieChartScreen extends Component {
 					<Button onPress={() => this.getData()} color = 'white' title="Set"/>
 					</TouchableOpacity>
 
-					{/* {this.getLabels()} */}
 
 				<View>
 				<Svg width={380} height={600}>
@@ -209,15 +169,10 @@ export default class PieChartScreen extends Component {
 						x = "Categories"
 						y = "total"
 						animate={{duration: 2000}}
-						//animate={{duration: 2000, onLoad: {duration: 2000}, onEnter: {duration: 1000, before: () => ({y: 0})}}}
 						innerRadius={90}
 						padAngle={2}
 						labelRadius={100}
-						//style={{ labels: { fill: "green", fontSize: 20}}}
 						labels={(item) => `${item._id.Categories}:${Math.round(item.total/this.getTotal()*100)}%`}
-						// labels={(item) => `${ item._id.Categories === 'Others' && item.total=== 0 ? "" : 
-						// item._id.Categories}:${item._id.Categories === 'Others' && item.total=== 0 ? "": 
-						// Math.round(item.total/this.getTotal()*100)}%`}
 						
 					/>
 					<VictoryLabel
@@ -232,35 +187,9 @@ export default class PieChartScreen extends Component {
 						x={190} y={200}
 						text={`-£${this.getTotal()}`}
 					/>
-					{/* <VictoryLegend x={30} y={200}
-						orientation="horizontal"
-						itemsPerRow={3}
-						gutter={20}
-						//style={{ border: { stroke: "black" } }}
-						colorScale={["tomato","orange", "gold","cyan", "#bd8cbd", "#68bab3", "#9997d1"]}
-						data={this.state.data}
-						name = "Categories"
-						//_id ={(item) => `${item._id.Categories}`}
-					
-						/> */}
-
-						{/* <VictoryLabel
-						//textAnchor="middle"
-						style={{ fontSize:10}}
-						x={40} y={350}
-						colorScale={["tomato","orange", "gold","cyan", "#bd8cbd", "#68bab3", "#9997d1"]}
-						text={`Labels`}
-						text = {this.getLabels}
-						text={`${this.getLabels()}`}
-
-					/> */}
 
 				</Svg>
 				</View>
-
-                {/* <TouchableOpacity style = {styles.categoriesButton} > 
-                    <Button onPress={() => this.props.navigation.navigate('CategoriesPage')} color = 'white'  title="Go to Categories"/>
-                </TouchableOpacity> */}
 			
 			</View>
 		)
@@ -269,8 +198,6 @@ export default class PieChartScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		//justifyContent: "center",
-		//alignItems: "center",
 		backgroundColor: "#afdfed"
 	},
 	dateStyle: {
@@ -283,7 +210,6 @@ const styles = StyleSheet.create({
 
 	button:{
 		width: 150,
-		//marginTop:10,
 		marginBottom:10,
 		backgroundColor:'#179bbd',
 		borderRadius:40,
@@ -291,20 +217,4 @@ const styles = StyleSheet.create({
 		borderColor: '#fff',
 		alignSelf: 'center',
 	},
-	// rectangle: {
-	// 	height: 10,
-	// 	width: 10,
-	// 	backgroundColor: 'salmon',
-	//   },
-
-	// categoriesButton:{
-	// 	width: 300,
-	// 	marginTop:30,
-	// 	marginBottom:10,
-	// 	backgroundColor:'#179bbd',
-	// 	borderRadius:40,
-	// 	borderWidth: 1,
-	// 	borderColor: '#fff',
-	// 	alignSelf: 'center',
-	// },
 });

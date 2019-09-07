@@ -1,3 +1,7 @@
+/**
+ * This is a Shopping class that display the merchant name, amount and date of transaction. 
+ */
+
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, AsyncStorage} from 'react-native';
 import moment from 'moment';

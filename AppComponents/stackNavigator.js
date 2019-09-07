@@ -1,3 +1,7 @@
+/**
+ * This class is used to create stack navigator
+ */
+
 import {createStackNavigator } from 'react-navigation'
 import Dashboard from './MainScreens/DashboardScreen';
 import ExpensesGraph from './MainScreens/PieChartScreen';
@@ -13,6 +17,7 @@ import Groceries from './MainScreens/Transactions Screens/Groceries';
 import Others from './MainScreens/Transactions Screens/Others';
 import BudgetForecastScreen from './MainScreens/BudgetForecastScreen'
 
+// Dashboard stack navigator
 export const HomeNavigation = createStackNavigator(
     {Home: Dashboard, 
     CategoriesPage: CategoriesScreen,
@@ -25,21 +30,21 @@ export const HomeNavigation = createStackNavigator(
     OthersScreen: Others
     }
 );
+ // Chart stack navigator
 export const chartNaviagtion = createStackNavigator(
     {Chart : ExpensesGraph,
     CategoriesPage: CategoriesScreen, }
 );
-
+// SetBudget stack navigator
 export const setBudgetNaviagtion = createStackNavigator(
 	{SetBudget : SetGoals}
 );
-
+// Settings stack navigator
 export const settingsNavigation = createStackNavigator({
     Settings: SettingsPage}
 );
+// Forecast stack navigator
 export const BudgetForecastNavigation = createStackNavigator({
     Forecast: BudgetForecastScreen }
 );
-// const categoriesNaviagtion = createStackNavigator(
-// 	{CategoriesPage: CategoriesScreen}
-// );
+;

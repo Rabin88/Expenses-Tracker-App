@@ -1,9 +1,9 @@
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
- *
- * @format
- * @flow
+ * 
+ * This is the main class for building Expense Tracker application.
+ * The Icon is used from 'react-native-vector-icons/FontAwesome' library.
  */
 
 import React, { Component } from 'react';
@@ -19,7 +19,8 @@ import {HomeNavigation,
 import Login from './AppComponents/Login';
 import Signup from './AppComponents/Signup';
 import BankScreen from './AppComponents/BankScreen';
-
+ 
+// App class that contain AppContainer component
 export default class App extends Component {
 	render() {
 		return (
@@ -27,6 +28,7 @@ export default class App extends Component {
 		);
 	}
 }
+ //Bottom tab Navigator that contain Home, Chart, SetBudget, Forecast, Settings tab on Dashboard screen
 const BottomTab = createBottomTabNavigator(
 	{
 		Home: HomeNavigation,
@@ -35,9 +37,8 @@ const BottomTab = createBottomTabNavigator(
 		Forecast: BudgetForecastNavigation,
 		Settings: settingsNavigation ,	
 	},
-	{
+	{   // This is switch cases for bottom tab naviations
 		defaultNavigationOptions: ({ navigation }) => ({
-			 //tabBarVisible: navigation.state.routeName == "LoginPage" ? false : true,
 			tabBarIcon: ( {focused, horizontal, tintColor }) => {
 				const { routeName } = navigation.state;
 				icon = <Icon name= "home" size={25} />
@@ -68,13 +69,12 @@ const BottomTab = createBottomTabNavigator(
 			},
 		}),
 		tabBarOptions: {
-			//activeTintColor: '#FF6F00',
 			activeTintColor: '#0652DD',
 			inactiveTintColor: '#263238',
-			//showLabel: false
 		},
 	}
 );
+ // Stack Navigator that contain Login, Signup and BankScreen
 const RootStack = createStackNavigator (
 	{LoginPage :  Login,
 	SignupPage : Signup,
@@ -98,4 +98,3 @@ const RootStack = createStackNavigator (
 
 const AppContainer = createAppContainer(RootStack);
 
- //const AppContainer = createAppContainer(BottomTab);

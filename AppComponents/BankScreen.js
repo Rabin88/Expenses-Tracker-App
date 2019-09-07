@@ -1,6 +1,11 @@
+/**
+ * This is Bank Screen that is used to get customer transaction data from database and navigate to Dashboard screen.
+ * User transaction data are manually entered in the database. Therefore, if the new user does not have any data
+ * in the database, it will prompt alert message and will not naviagte to Dashboard page.
+ */
 import React, { Component } from 'react'
 import { Text, View, Button, TouchableOpacity, StyleSheet, Image, AsyncStorage, Linking} from 'react-native'
-import moment from 'moment';
+import moment from 'moment'; // component that format date 
 
 export default class BankScreen extends Component {
     static navigationOptions = {
@@ -18,7 +23,7 @@ export default class BankScreen extends Component {
 		};
 		this.getStorageData();
     }
-    
+    // Function to get stored token and userId
     async getStorageData() {
 		try {
 		  const user_id = await AsyncStorage.getItem('userId');
@@ -31,7 +36,7 @@ export default class BankScreen extends Component {
 		  "Error retrieving data" + error;
 		}
     }
-
+    // To check if the user have tranascation data in the database.
     navigateToHome(){
         if(this.state.data.length > 0 && this.state.data.count_transaction != 0){
             this.props.navigation.navigate('Home')
@@ -41,7 +46,7 @@ export default class BankScreen extends Component {
         
     }
 
-
+    // Function to  fetch expenses data from database
     getExpensesData (){  
         var dateObj = new Date();
         var month = dateObj.getUTCMonth() + 1; //months from 1-12

@@ -1,3 +1,10 @@
+/**
+ * This is a BudgetForecastScreen class that display the monthly expenses in a line graph.
+ * Moreover, it predicts the next month expense based on average income using liner regression.
+ * The line graph is buid using "victory-native" library.
+ */
+
+
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, ScrollView, AsyncStorage} from 'react-native'
 import { VictoryLine, VictoryChart, VictoryTheme } from "victory-native";
@@ -36,20 +43,7 @@ export default class BudgetForecastScreeen extends Component {
 		}
 	  }
 	
-	// 	displayData() {
-	// 	this.setState({
-	// 		data: [
-	// 		{_id: 'Jan', expenses: 400},
-	// 		{_id: 'Feb', expenses: 200},
-	// 		{_id: 'March',expenses: 300},
-	// 		{_id: 'April', expenses: 500},
-	// 		{_id: 'May', expenses: 600},
-	// 		{_id: 'June', expenses: 500},
-	// 		{_id: 'July', expenses: 400},
-	// 		{_id: 'August', expenses: 700},
-	// 		]
-	// 	})
-	// }
+	// Function to get monthly expense data from the database
 	getData(){  
 		let user_id = this.state.myKey;
 		fetch(`https://weareexpensetracker.herokuapp.com/api/monthlyBudget?user_id=${user_id}`, {
@@ -190,18 +184,6 @@ export default class BudgetForecastScreeen extends Component {
 	}
 		
 	render() {
-		// const testingData = [
-		//     { expenses: 94, income: 17 },
-		//     { expenses: 73, income: 13 },
-		//     { expenses: 59, income: 12 },
-		//     { expenses: 80, income: 15 },
-		//     { expenses: 93, income: 16 },
-		//     { expenses: 85, income: 14 },
-		//     { expenses: 66, income: 16 },
-		//     { expenses: 79, income: 16 },
-		//     { expenses: 77, income: 18 },
-		//     { expenses: 91, income: 19 },
-		//   ];
 		this.state.data.forEach((element) => {
 			if(element._id === 1) {
 				element._id = 'Jan'

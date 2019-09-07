@@ -1,3 +1,7 @@
+/**
+ * This is a Bills class that display the merchant name, amount and date of transaction. 
+ */
+
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, AsyncStorage} from 'react-native';
 import moment from 'moment';
@@ -25,7 +29,8 @@ export default class Bills extends Component {
 			myKey: uid
 		};
 	}
-	 async componentDidMount (){  
+	 
+	async componentDidMount (){  
 		 
 		let jwt_token = "";
 		try {
@@ -70,11 +75,6 @@ export default class Bills extends Component {
 				</View>
 			)
 		}
-		// renderSeparator = () => {
-		// 	return (
-		// 		<View style = {{ width: '100%', borderWidth:0.2}}></View>
-		// 	)
-		// }
 		 
 		render() {
 			return (
@@ -86,7 +86,6 @@ export default class Bills extends Component {
 						data={this.state.data}   
 						renderItem={this.renderItem} 
 						keyExtractor={(item,index)=> index.toString()} 
-						//ItemSeparatorComponent ={this.renderSeparator}
 					/>
 	
 				</View>
@@ -97,8 +96,6 @@ export default class Bills extends Component {
 	const styles = StyleSheet.create({
 		container: {
 			flex: 1,
-			//justifyContent: 'center',
-			//alignItems: 'center',
 			backgroundColor: '#afdfed',	
 		},
 		heading: {
@@ -136,6 +133,5 @@ export default class Bills extends Component {
 			padding: 5,
 			height: 25,
 			color: '#324dc7',
-			//textAlign: 'center'	
 		}
 	});

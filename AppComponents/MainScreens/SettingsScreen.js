@@ -1,3 +1,6 @@
+/**
+ * This is SettingScreen class where user can successfully logout from the system.
+ */
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Button, TouchableOpacity, AsyncStorage } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,7 +12,7 @@ export default class SettingsScreen extends Component {
 		headerStyle: {backgroundColor: '#179bbd'},
 		headerTitleStyle: {color:'white'}
     }
-    
+    // Fuction were stored token is removed from the system.
     async removeValue() {
         try {
           await AsyncStorage.removeItem('token');
@@ -50,10 +53,6 @@ export default class SettingsScreen extends Component {
                         </View>
                     </TouchableOpacity>
                 
-
-                {/* <TouchableOpacity style = {styles.buttonContainer} > 
-                    <Button onPress={() => this.props.navigation.navigate('Forecast')} color = 'white'  title="Budget Forecast"/>
-                </TouchableOpacity> */}
             </View>
         )
     }
@@ -61,7 +60,6 @@ export default class SettingsScreen extends Component {
 const styles = StyleSheet.create ( {
     container : {
         flex : 1,
-        //justifyContent: 'center',
         backgroundColor : '#afdfed',
         padding:10,
     },
@@ -71,7 +69,6 @@ const styles = StyleSheet.create ( {
         marginBottom: 20
     },
     border: {
-        //backgroundColor: "#54ccb0",
         marginTop:15,
 		marginLeft: 5,
 		marginRight:5,

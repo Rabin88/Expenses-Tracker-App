@@ -1,3 +1,10 @@
+/**
+ * This is a SetBudgetScreen where user set monthly budget for each category and progress bar will be displayed on screen.
+ * User need to select category and target amount inorder to set budget monthly.
+ * Progress bar is build using 'react-native-progress-bar-animated' libray.
+ * NumbericInput selector was built using 'react-native-numeric-input' library.
+ */
+
 import React, {Component} from 'react';
 import {Modal, Text, Button, StyleSheet, TouchableHighlight, View, ScrollView,Dimensions, TextInput, AsyncStorage} from 'react-native';
 import NumericInput from 'react-native-numeric-input'
@@ -48,7 +55,8 @@ export default class SetBudgetScreen extends Component {
 		}
 	  }
 
-	saveData(){
+	  // Function to save categories and target amount entered by users into the database.
+	  saveData(){
 
 		let data ={
             "categories": this.state.selectCategory,
@@ -56,8 +64,8 @@ export default class SetBudgetScreen extends Component {
 			"user_id": this.state.myKey
 		};
 		
-        console.log(data);
-        // Client Send the reequest to Server localhost:3000 as a JSON object
+        //console.log(data);
+     
         fetch('https://weareexpensetracker.herokuapp.com/api/budget', {
             method: 'POST',
             headers: {
@@ -67,7 +75,6 @@ export default class SetBudgetScreen extends Component {
             },
             body: JSON.stringify(data)
         })
-         // Client get the response from Server, upon successful the user account will be created and navigate back to login page
         .then (result => {
 			console.log('got result back');
 			console.log(this.props);
@@ -78,7 +85,7 @@ export default class SetBudgetScreen extends Component {
             console.log(error);
         });
 	}
-
+	// Function to get saved target amount of users from the database
 	getData (){  
 
 		let user_id = this.state.myKey;
@@ -106,7 +113,7 @@ export default class SetBudgetScreen extends Component {
 		this.setState({ error});      
 		});  
 	};
-
+	// Function to find the amount spent on particular category.
 	findCategorySpentAmount(category){
 
 		for(let i = 0; i<this.state.categorySpent.length; i++){
@@ -119,7 +126,7 @@ export default class SetBudgetScreen extends Component {
 
 		return 0;
 	}
-
+	// Function to get the transaction category data to track the monthly expenses for particular category.
 	getCategoryData (){  
 		var dateObj = new Date();
 		var month = dateObj.getUTCMonth() + 1; //months from 1-12
@@ -176,7 +183,7 @@ export default class SetBudgetScreen extends Component {
 
 		return (spent/budget)*100;
     }
-
+	// Function to go to overview set Budget screen
 	goBack(){
 		if(this.state.selectCategory === ''){
 			alert('select a Category!');

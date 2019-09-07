@@ -1,3 +1,7 @@
+/**
+ * This is a DashboardScreen class that displays the user's total balance, monthly income and expenses.
+ * 
+ */
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, Image, FlatList, TouchableOpacity, AsyncStorage, ScrollView} from 'react-native';
 import moment from 'moment';
@@ -21,6 +25,7 @@ export default class DashboardScreen extends Component {
 		this.getStorageData();
 	}
 
+	// Function to get stored token and userID.
 	async getStorageData() {
 		try {
 		  const user_id = await AsyncStorage.getItem('userId');
@@ -34,7 +39,7 @@ export default class DashboardScreen extends Component {
 		  "Error retrieving data" + error;
 		}
 	  }
-
+	  	// Function to get totalbalance amount from the database
 		 getData(){  
 		 let user_id = this.state.myKey;
 			  
@@ -52,37 +57,14 @@ export default class DashboardScreen extends Component {
 			
 			this.setState({          
 				totalBalance: resJson[0],  // database array       
-				//error: resJson.error || null,                 
+				                 
 			  });        
 		   })      
 		   .catch(error => {        
 			 this.setState({ error});      
 		   }); 
 		}
-
-		//   const url = `https://weareexpensetracker.herokuapp.com/api/balance`;
-				
-		//     fetch(url, {
-		// 		method: 'GET',
-		// 		headers: {
-		// 			 //'Authorization': 'Bearer '+ this.state.token,
-		// 			'Accept': 'application/json',
-		// 			'Content-Type': 'application/json',
-		// 		},
-		// 		})     
-		//       .then(res => res.json())      
-		//       .then(res => {        
-		//         this.setState({          
-		//           data: res,  // database array        
-		//           error: res.error || null,          
-		//           loading: false,        
-		//         });        
-		//      })      
-		//      .catch(error => {        
-		//        this.setState({ error, loading: false });      
-		//      });  
-		//   };
-		
+		// Function to get monthly expense and income amount from the database
 		 getExpensesData (){  
 			var dateObj = new Date();
 			var month = dateObj.getUTCMonth() + 1; //months from 1-12
@@ -120,22 +102,12 @@ export default class DashboardScreen extends Component {
 					data: result  // database array                        
 				  });        
 			   }) 
-			// 	.then(res => res.json())      
-		    //   	.then(res => {        
-		    //     this.setState({          
-		    //       data: res,  // database array                
-		    //     });        
-		    //  })      
+     
 		     .catch(error => {        
 		       this.setState({ error});      
 		     }) 
 		}
-	// renderBalance = ({item}) => {
-	// 	return (
-	// 		<Text style={styles.balance}> Balance  £{item.balance} </Text>
-	// 	)
-	// }
-
+	// This function will display items in a list view.
 	renderItem=({item}) => { 
 		return(
 			<View>
