@@ -41,7 +41,7 @@ export default class BankScreen extends Component {
         if(this.state.data.length > 0 && this.state.data.count_transaction != 0){
             this.props.navigation.navigate('Home')
         }else{
-            alert('Connection to your bank cannot be established at this point.');
+            alert('Transaction data unavailable.');
         }
         
     }
