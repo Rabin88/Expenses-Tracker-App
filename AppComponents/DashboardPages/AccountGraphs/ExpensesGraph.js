@@ -193,7 +193,7 @@ export default class Expenses extends Component {
 						//animate={{duration: 2000, onLoad: {duration: 2000}, onEnter: {duration: 1000, before: () => ({y: 0})}}}
 						innerRadius={90}
 						padAngle={2}
-						labelRadius={110}
+						labelRadius={100}
 						//style={{ labels: { fill: "green", fontSize: 20}}}
 						labels={(item) => `${item._id.Categories}:${Math.round(item.total/this.getTotal()*100)}%`}
 						// labels={(item) => `${ item._id.Categories === 'Others' && item.total=== 0 ? "" : 

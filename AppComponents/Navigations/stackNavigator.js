@@ -11,6 +11,7 @@ import Housing from '../DashboardPages/Merchant Screens/Housing';
 import Bills from '../DashboardPages/Merchant Screens/Bills';
 import Groceries from '../DashboardPages/Merchant Screens/Groceries';
 import Others from '../DashboardPages/Merchant Screens/Others';
+import BudgetForecastScreen from '../DashboardPages/BudgetForecast/BudgetForecastScreen'
 
 export const HomeNavigation = createStackNavigator(
     {Home: Dashboard, 
@@ -33,7 +34,11 @@ export const setBudgetNaviagtion = createStackNavigator(
 );
 
 export const settingsNavigation = createStackNavigator({
-    Settings: SettingsPage}
+    Settings: SettingsPage,
+    }
+);
+export const BudgetForecastNavigation = createStackNavigator({
+    Forecast: BudgetForecastScreen }
 );
 // const categoriesNaviagtion = createStackNavigator(
 // 	{CategoriesPage: CategoriesScreen}

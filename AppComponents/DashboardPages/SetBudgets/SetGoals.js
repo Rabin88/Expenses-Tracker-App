@@ -236,6 +236,7 @@ export default class SetBudgets extends Component {
 			<View style={styles.container}>
 				<ScrollView>
 					<Text style ={{fontSize:15, color:'black', marginBottom:20, textAlign:'center'}}> Set Budgets Category </Text>
+					
 					{budgetList}
 
 					<TouchableHighlight style= {styles.button}>

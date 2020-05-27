@@ -48,17 +48,23 @@ export default class Signup extends Component {
          // Client get the response from Server, upon successful the user account will be created and navigate back to login page
         .then (async (result) => {
             let responseJson = await result.json();
-            console.log(responseJson);
+            //console.log(responseJson);
             
             if(responseJson.error){
                 alert('Usename is already taken');
+                return;
+            }
+            if(responseJson.emailError){
+                alert('Email already exist');
+                return;
             }
             if(responseJson.success){
                 this.props.navigation.navigate('LoginPage');
+                return;
             }else{
                 alert('Register unsuccessfull. Please check your inputs');
+                return;
             }
-			
         })
         .catch(error => {
             console.log(error);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {
     StyleSheet,
@@ -60,7 +61,7 @@ export default class Login extends Component {
             console.log(resJson.token)
             await AsyncStorage.setItem('userId', resJson._id);
             console.log(resJson._id)
-            this.props.navigation.navigate('Home');
+            this.props.navigation.navigate('BankPage');
         })
         .catch(error => {
             console.log(error);
@@ -104,13 +105,17 @@ export default class Login extends Component {
         
                             /> 
                             
-                            <TouchableOpacity style = {styles.buttonContainer}> 
-                            <Button color = 'white' onPress={this.handleSubmit} 
-                            title="LOGIN"/>
+                            <TouchableOpacity style = {styles.buttonContainer} onPress={this.handleSubmit}> 
+                                <View style = {{flexDirection:'row', alignSelf: 'center',}}>
+                                    <View style={{marginTop: 5, marginRight: 5}}>
+                                    <Icon name="sign-in" size={25} color= "white"/>
+                                    </View>
+                                    <Button color = 'white' onPress={this.handleSubmit} title="LOGIN"/>
+                                </View>
                             </TouchableOpacity>
 
                             {/* <TouchableOpacity style = {styles.buttonContainer}> 
-                            <Button color = 'white' onPress={() => this.props.navigation.navigate('Home')} 
+                            <Button color = 'white' onPress={() => this.props.navigation.navigate('BankPage')} 
                             title="LOGIN"/>
                             </TouchableOpacity>  */}
                         
@@ -143,7 +148,7 @@ const styles = StyleSheet.create ( {
     buttonContainer: {
         backgroundColor: 'green',
         marginTop: 20,
-        marginBottom: 20
+        marginBottom: 20,
 
     },
     text: {

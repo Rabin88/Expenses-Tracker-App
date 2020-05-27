@@ -63,7 +63,7 @@ export default class Travel extends Component {
 			return(
 				<View>
 					<View style={{flex:1}}>
-						<Text style={styles.date} >  {moment(item._id.Date).format("MMM Do YY")} </Text>
+						<Text style={styles.date} >  {moment(item._id.Date).format("DD MMM YY")} </Text>
 					</View>
 					<View style={{flexDirection:'row', marginBottom: 5}}>
 						<Text style={styles.merchant} >  {item._id.Merchant} </Text>

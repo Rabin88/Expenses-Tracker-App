@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, Image, FlatList, TouchableOpacity, AsyncStorage} from 'react-native';
 import moment from 'moment';
 
-
-
 export default class Dashboard extends Component {
 	static navigationOptions = {
 		title:'Dashboard',
@@ -31,11 +29,12 @@ export default class Dashboard extends Component {
 		  this.getData();
 		  this.getExpensesData();
 		} catch (error) {
-		  console.log("Error retrieving data" + error);
+		  //console.log("Error retrieving data" + error);
+		  "Error retrieving data" + error;
 		}
 	  }
 
-	 	getData(){  
+		 getData(){  
 		 let user_id = this.state.myKey;
 			  
 		 fetch(`http://localhost:3000/api/totalbalance?user_id=${user_id}`, {
@@ -48,7 +47,7 @@ export default class Dashboard extends Component {
 			})
 			.then(async(result) => {
 			let resJson = await result.json();
-			console.log(resJson);
+			//console.log(resJson);
 			
 			this.setState({          
 				totalBalance: resJson[0],  // database array       
@@ -59,7 +58,6 @@ export default class Dashboard extends Component {
 			 this.setState({ error});      
 		   }); 
 		}
-
 
 		//   const url = `http://localhost:3000/api/balance`;
 				
@@ -97,7 +95,7 @@ export default class Dashboard extends Component {
 	
 			const sDate = thisMonthFirstDay;
 			const fDate = moment(dateObj, "DD-MM-YYYY", true).format();
-			console.log(sDate, fDate);
+			//console.log(sDate, fDate);
 	
 	
 			fetch('http://localhost:3000/api/expenses', {
@@ -113,12 +111,20 @@ export default class Dashboard extends Component {
 					userid: this.state.myKey
 				})
 			})
-				.then(res => res.json())      
-		      	.then(res => {        
-		        this.setState({          
-		          data: res,  // database array                
-		        });        
-		     })      
+			.then(async(res) => {
+				let result = await res.json();
+				//console.log(resJson);
+				
+				this.setState({          
+					data: result  // database array                        
+				  });        
+			   }) 
+			// 	.then(res => res.json())      
+		    //   	.then(res => {        
+		    //     this.setState({          
+		    //       data: res,  // database array                
+		    //     });        
+		    //  })      
 		     .catch(error => {        
 		       this.setState({ error});      
 		     }) 
@@ -158,11 +164,12 @@ export default class Dashboard extends Component {
 			<View style={styles.container}>
 				<View>
 				<Image  style = {{ width: 200, height: 200, alignSelf: 'center', marginTop: 30, marginBottom:10, }}
-					source={require('/Users/rabinpun/Desktop/ReactNative/Finance/assets/logo.png')}
+					source={require('/Users/rabinpun/Desktop/FinanceFinal/assets/logo.png')}
 					/>
 				
 				<View >
 				<Text style={styles.balance}> Balance   £{currentbalance} </Text>
+				<Text style={styles.budgetDetails}>  {moment(this.sDate).format("MMMM")} Budget Details </Text>
 				{/* <Text style={styles.balance}> Balance   £{ this.renderBalance()} </Text> */}
 				</View>
 				<FlatList 
@@ -193,7 +200,7 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		textAlign: 'center',
 		marginTop: 30,
-		marginBottom:30,
+		marginBottom:20,
 		color: '#09872d'
 	},
 	welcome: {
@@ -235,5 +242,12 @@ const styles = StyleSheet.create({
 		borderColor: '#fff',
 		alignSelf: 'center',
 	},
+	budgetDetails: {
+		fontSize: 20,
+		//fontWeight: 'bold',
+		textAlign: 'center',
+		marginBottom:15,
+		color: '#585759'
+	}
 	
 });

@@ -13,10 +13,12 @@ import { createStackNavigator,
 		createBottomTabNavigator } from 'react-navigation';
 import {HomeNavigation, 
 		chartNaviagtion, 
-		setBudgetNaviagtion, 
+		setBudgetNaviagtion,
+		BudgetForecastNavigation, 
 		settingsNavigation} from './AppComponents/Navigations/stackNavigator'
 import Login from './AppComponents/Login/Login';
 import Signup from './AppComponents/Signup/Signup';
+import Bank from './AppComponents/Bank';
 
 export default class App extends Component {
 	render() {
@@ -30,7 +32,9 @@ const BottomTab = createBottomTabNavigator(
 		Home: HomeNavigation,
 		Chart: chartNaviagtion,
 		SetBudget: setBudgetNaviagtion,
-		Settings: settingsNavigation ,	
+		Forecast: BudgetForecastNavigation,
+		Settings: settingsNavigation,
+			
 	},
 	{
 		defaultNavigationOptions: ({ navigation }) => ({
@@ -44,11 +48,15 @@ const BottomTab = createBottomTabNavigator(
 					break;
 					
 					case "Chart":
-					icon = <Icon name="line-chart" size={25} color={tintColor} />
+					icon = <Icon name="pie-chart" size={25} color={tintColor} />
 					break;
 
 					case "SetBudget":
 					icon = <Icon name="plus-circle" size={25} color={tintColor} />
+					break;
+
+					case "Forecast":
+					icon = <Icon name="line-chart" size={25} color={tintColor} />
 					break;
 					
 					case "Settings":
@@ -71,6 +79,7 @@ const BottomTab = createBottomTabNavigator(
 const RootStack = createStackNavigator (
 	{LoginPage :  Login,
 	SignupPage : Signup,
+	BankPage: Bank,
 		Tabs: {
 			screen: BottomTab,
 			navigationOptions:{

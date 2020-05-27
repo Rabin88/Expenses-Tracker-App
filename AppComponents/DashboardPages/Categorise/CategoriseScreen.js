@@ -17,7 +17,7 @@ export default class Categories extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			startDate: "01-01-2019",
+			startDate: "01-04-2019",
 			FinishDate: new Date(),      
 			data: [] ,
 			myKey: " ",
@@ -25,7 +25,6 @@ export default class Categories extends Component {
 		};
 		
 		this.getStorageData();
-		
 	}
 
 	async getStorageData() {
@@ -47,10 +46,10 @@ export default class Categories extends Component {
 		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
 		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
 
-		console.log(sDate);
-		console.log(fDate);
-		console.log(this.state.myKey);
-		console.log(this.state.token);
+		// console.log(sDate);
+		// console.log(fDate);
+		// console.log(this.state.myKey);
+		// console.log(this.state.token);
 
 
         fetch('http://localhost:3000/api/categories', {
