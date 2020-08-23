@@ -10,3 +10,4 @@ This is my MSc Project. The project aimed at developing a reliable, cost-free, u
 * Jest and Enzyme were used for unit testing whereas Appium was used for UI automation testing.
 * Several React Native library were used such as react-native-date picker, react-native-vector-icons, Victory pie, react-native-progress-bar-animated and Node Mailer (email sending).
 
+**Check AppScreenshot Folder for app UI screens**
