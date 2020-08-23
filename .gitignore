@@ -2,7 +2,8 @@
 #
 .DS_Store
 .buckconfig
-.flowconfif
+.flowconfig
+.watchmanconfig
 .gitattributes
 metro.config.js
 babel.config.js
