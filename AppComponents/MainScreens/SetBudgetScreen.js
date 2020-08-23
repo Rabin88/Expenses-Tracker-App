@@ -1,3 +1,10 @@
+/**
+ * This is a SetBudgetScreen where user set monthly budget for each category and progress bar will be displayed on screen.
+ * User need to select category and target amount inorder to set budget monthly.
+ * Progress bar is build using 'react-native-progress-bar-animated' libray.
+ * NumbericInput selector was built using 'react-native-numeric-input' library.
+ */
+
 import React, {Component} from 'react';
 import {Modal, Text, Button, StyleSheet, TouchableHighlight, View, ScrollView,Dimensions, TextInput, AsyncStorage} from 'react-native';
 import NumericInput from 'react-native-numeric-input'
@@ -6,7 +13,7 @@ import ModalSelector from 'react-native-modal-selector'
 import moment from 'moment';
 
 
-export default class SetBudgets extends Component {
+export default class SetBudgetScreen extends Component {
 	static navigationOptions = {
 		title: 'Set Budgets',
 		headerStyle: {backgroundColor: '#179bbd'},
@@ -48,7 +55,8 @@ export default class SetBudgets extends Component {
 		}
 	  }
 
-	saveData(){
+	  // Function to save categories and target amount entered by users into the database.
+	  saveData(){
 
 		let data ={
             "categories": this.state.selectCategory,
@@ -56,9 +64,9 @@ export default class SetBudgets extends Component {
 			"user_id": this.state.myKey
 		};
 		
-        console.log(data);
-        // Client Send the reequest to Server localhost:3000 as a JSON object
-        fetch('http://localhost:3000/api/budget', {
+        //console.log(data);
+     
+        fetch('https://weareexpensetracker.herokuapp.com/api/budget', {
             method: 'POST',
             headers: {
 				'Authorization': 'Bearer '+ this.state.token,
@@ -67,7 +75,6 @@ export default class SetBudgets extends Component {
             },
             body: JSON.stringify(data)
         })
-         // Client get the response from Server, upon successful the user account will be created and navigate back to login page
         .then (result => {
 			console.log('got result back');
 			console.log(this.props);
@@ -78,12 +85,12 @@ export default class SetBudgets extends Component {
             console.log(error);
         });
 	}
-
+	// Function to get saved target amount of users from the database
 	getData (){  
 
 		let user_id = this.state.myKey;
 
-        fetch(`http://localhost:3000/api/budget?user_id=${user_id}`, {
+        fetch(`https://weareexpensetracker.herokuapp.com/api/budget?user_id=${user_id}`, {
             headers: {
 				'Authorization': 'Bearer '+ this.state.token,
                 'Accept': 'application/json',
@@ -106,7 +113,7 @@ export default class SetBudgets extends Component {
 		this.setState({ error});      
 		});  
 	};
-
+	// Function to find the amount spent on particular category.
 	findCategorySpentAmount(category){
 
 		for(let i = 0; i<this.state.categorySpent.length; i++){
@@ -119,7 +126,7 @@ export default class SetBudgets extends Component {
 
 		return 0;
 	}
-
+	// Function to get the transaction category data to track the monthly expenses for particular category.
 	getCategoryData (){  
 		var dateObj = new Date();
 		var month = dateObj.getUTCMonth() + 1; //months from 1-12
@@ -136,7 +143,7 @@ export default class SetBudgets extends Component {
 		console.log(sDate, fDate);
 
 
-        fetch('http://localhost:3000/api/categories', {
+        fetch('https://weareexpensetracker.herokuapp.com/api/categories', {
             method: 'POST',
             headers: {
 				'Authorization': 'Bearer '+ this.state.token,
@@ -176,7 +183,7 @@ export default class SetBudgets extends Component {
 
 		return (spent/budget)*100;
     }
-
+	// Function to go to overview set Budget screen
 	goBack(){
 		if(this.state.selectCategory === ''){
 			alert('select a Category!');
@@ -196,13 +203,14 @@ export default class SetBudgets extends Component {
 		
         this.state.data.forEach(function (elem) {
 			let spentAmount = this.findCategorySpentAmount(elem.categories).toFixed(2);
+			let setAmount = elem.amount.toFixed(2)
 			console.log(spentAmount);
             budgetList.push(
                 <View key={count++}>
 					<View style={{flex:1,flexDirection: 'row'}}>
 						<Text style= {{flex: 1,fontSize:15, fontWeight: 'bold', marginBottom:5, marginLeft:10,}}>{elem.categories}</Text>
 						<Text style= {{flex: 1,fontSize:13, fontWeight: 'bold', textAlign: 'right', color: '#59108D', marginBottom: 5,marginRight:5}}> 
-						Current Spending £{spentAmount}</Text>
+						 Target Amount £{setAmount}</Text>
 					</View>
 					<ProgressBarAnimated style = {{marginBottom:20, marginTop: 10}}
 						width={barWidth}
@@ -212,10 +220,11 @@ export default class SetBudgets extends Component {
 						borderColor = 'orange'
 						backgroundColor='#6CC644'
 						onComplete={() => {
-							alert('Yay! Set Target Completed!');
+							alert('You have exceeded your target amonut for this month!');
 						}}
 					/>
-					<Text style={styles.label}> £{spentAmount} remaning of £{elem.amount}</Text>
+					{/* <Text style={styles.label}> £{spentAmount} remaning of £{elem.amount}</Text> */}
+					<Text style={styles.label}> Current Spending £{spentAmount} </Text>
 				</View>
             );
         }.bind(this));
@@ -279,7 +288,7 @@ export default class SetBudgets extends Component {
 									totalWidth={200}
 									totalHeight={60}
 									minValue={5}
-									maxValue={200}
+									maxValue={9999}
 									onLimitReached={(value)=> {if (value == 0) {return; } else{
 										alert('Max Limit Reached')}
 									}}

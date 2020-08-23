@@ -1,11 +1,15 @@
+/**
+ * This is a Shopping class that display the merchant name, amount and date of transaction. 
+ */
+
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, AsyncStorage} from 'react-native';
 import moment from 'moment';
 
 
-export default class Groceries extends Component {
+export default class Shopping extends Component {
 	static navigationOptions = {
-		title:'Groceries',
+		title:'Shopping',
 		headerStyle: {backgroundColor: '#179bbd'},
 		headerTitleStyle: {color:'white'}
 	};
@@ -38,7 +42,7 @@ export default class Groceries extends Component {
 
 		let startDate = encodeURIComponent(this.state.startDate);
 		let finishDate = encodeURIComponent(this.state.FinishDate);
-		  const url = `http://localhost:3000/api/categories/merchant?category=Groceries&sdate=${startDate}&fdate=${finishDate}&uid=${this.state.myKey}`;
+		  const url = `https://weareexpensetracker.herokuapp.com/api/categories/merchant?category=Shopping&sdate=${startDate}&fdate=${finishDate}&uid=${this.state.myKey}`;
 			console.log('token pre call: ', jwt_token);
 		    fetch(url, {
 				headers: {
@@ -72,13 +76,6 @@ export default class Groceries extends Component {
 				</View>
 			)
 		}
-		renderSeparator = () => {
-			return (
-				<View style = {{ width: '100%', borderWidth:0.2}}>
-	
-				</View>
-			)
-		}
 		 
 		render() {
 			return (
@@ -90,7 +87,6 @@ export default class Groceries extends Component {
 						data={this.state.data}   
 						renderItem={this.renderItem} 
 						keyExtractor={(item,index)=> index.toString()} 
-						ItemSeparatorComponent ={this.renderSeparator}
 					/>
 	
 				</View>

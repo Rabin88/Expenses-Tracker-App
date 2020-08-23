@@ -1,5 +1,12 @@
+/**
+ * This is a categoriseScreen that categorise the user's transaction into six different categories which are
+ * Food, Shopping, Housing, Bills, Groceries, Travel and Others. All the categories are displayed in a list view.
+ * It display the number of transctions and expense amount for each category. It is sorted with highest amount on the top
+ * with two decimal places. Date selection was build using 'react-native-datepicker' library.
+ */
+
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, ScrollView,  AsyncStorage} from 'react-native'
+import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, ScrollView,  AsyncStorage, Alert} from 'react-native'
 import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
@@ -7,7 +14,7 @@ import moment from 'moment';
 
 //import { ScrollView } from 'react-native-gesture-handler';
 
-export default class Categories extends Component {
+export default class CategorieScreen extends Component {
 	static navigationOptions = {
 		title: 'Categories',
 		headerStyle: {backgroundColor: '#179bbd'},
@@ -26,7 +33,7 @@ export default class Categories extends Component {
 		
 		this.getStorageData();
 	}
-
+	// Function to get stored token and userID.
 	async getStorageData() {
 		try {
 		  const user_id = await AsyncStorage.getItem('userId');
@@ -39,9 +46,7 @@ export default class Categories extends Component {
 		}
 	  }
 
-	//  componentDidMount (){  
-	// 	 console.log('component did mount!'); 
-	// };
+	// Function to get users tansactions categories data from the database.
 	getData (){  
 		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
 		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
@@ -52,7 +57,7 @@ export default class Categories extends Component {
 		// console.log(this.state.token);
 
 
-        fetch('http://localhost:3000/api/categories', {
+        fetch('https://weareexpensetracker.herokuapp.com/api/categories', {
             method: 'POST',
             headers: {
 				'Authorization': 'Bearer '+ this.state.token,
@@ -81,16 +86,7 @@ export default class Categories extends Component {
 		this.setState({ error});      
 		});  
 	};
-
-	// renderItem=({item}) => { 
-	// 	return(
-	// 		<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
-	// 			<Text style={styles.category} > {item._id.Categories} </Text>
-	// 			<Text style={styles.amount} > -£{item.total.toLocaleString(undefined, {maximumFractionDigits:2})} </Text>
-	// 		</View>
-	// 		)
-	// }
-
+	// Function to display categories in a list view
 	renderItem=({item}) => { 
 		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
 		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
@@ -167,7 +163,7 @@ export default class Categories extends Component {
 				<TouchableOpacity onPress={() => this.props.navigation.navigate('BillsScreen', payload)}>
 				<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
 					<View style={{flex:1}}>
-						<Text style={styles.category}> <Icon name="list-alt" size={20}/>  {item._id.Categories}  </Text>
+						<Text style={styles.category}> <Icon name="list-alt" size={20}/>  {item._id.Categories} </Text>
 						<Text style={styles.countTransaction}>  {item.count_transaction} transactions  </Text>
 					</View>
 					<Text style={styles.amount} > - £{item.total.toFixed(2)} </Text>
@@ -191,32 +187,13 @@ export default class Categories extends Component {
 		} 
 		else {
 			return;
-		// return(
-		// 	<View style={{flex:1, flexDirection:'row', marginBottom: 5}}>
-		// 		<Text style={styles.category} > {item._id.Categories} </Text>
-		// 		<Text style={styles.amount} > -£{item.total.toLocaleString(undefined, {maximumFractionDigits:2})} </Text>
-		// 	</View>
-		// 	)
 		 }
-	}
-
-	renderSeparator = () => {
-		return (
-			<View style = {{height: 2, width: '100%',color: 'black'}}>
-
-			</View>
-		)
 	}
 
 	render() {
 		return (
 			// <ScrollView>
 				<View style={styles.container}>
-					  {/* <TouchableOpacity onPress ={this.getUserID()}>  
-						<Text> </Text>  
-						</TouchableOpacity> */}
-
-				{/* <Text style={styles.dateStyle}> {moment(this.state.startDate).format()} </Text>	 */}
 					<View style={{ flexDirection:'row'}}>
 						<Text style={styles.dateStyle}> From </Text>
 						<Text style={styles.dateStyle}> To </Text>
@@ -284,7 +261,6 @@ export default class Categories extends Component {
 						data={this.state.data}   
 						renderItem={this.renderItem} 
 						keyExtractor={(item,index)=> item._id.Categories} 
-						ItemSeparatorComponent ={this.renderSeparator}
 					/>		
 				</View>
 			// </ScrollView>
@@ -292,59 +268,57 @@ export default class Categories extends Component {
 	}
 }
 const styles = StyleSheet.create({
-		container: {
-			flex: 1,
-			backgroundColor: '#afdfed', 
-		},
-		dateStyle: {
-			fontSize: 15,
-			marginTop: 10,
-			marginBottom:5,
-			marginLeft: 10,
-			marginRight:115,
-		},
-		welcome: {
-			fontSize: 20,
-			textAlign: 'center',
-			marginBottom: 30,
-			marginTop: 30,
-		},
-		category: {
-			//flex:1,
-			//flexDirection: 'column',
-			backgroundColor: '#e1e8e5',
-			fontSize: 20,
-			padding: 15,
-			marginLeft: 5,
-			height: 50,
-			color: 'black',	
-		},
-		amount: {
-			flex:1,
-			backgroundColor: '#e1e8e5',
-			fontSize: 20,
-			padding: 20,
-			marginRight: 5,
-			height: 70,
-			textAlign: 'right',
-			color: 'red'
-		},
-		button:{
-			width: 150,
-			marginBottom:10,
-			backgroundColor:'#179bbd',
-			borderRadius:40,
-			borderWidth: 1,
-			borderColor: '#fff',
-			alignSelf: 'center',
-		},
-		countTransaction : {
-			backgroundColor: '#e1e8e5',
-			fontSize: 16,
-			marginLeft: 5,
-			marginBottom: 5,
-			height: 20,
-			color: '#324dc7',
-			textAlign: 'center'	
-		}
+	container: {
+		flex: 1,
+		backgroundColor: '#afdfed', 
+	},
+	dateStyle: {
+		fontSize: 15,
+		marginTop: 10,
+		marginBottom:5,
+		marginLeft: 10,
+		marginRight:115,
+	},
+	welcome: {
+		fontSize: 20,
+		textAlign: 'center',
+		marginBottom: 30,
+		marginTop: 30,
+	},
+	category: {
+		backgroundColor: '#e1e8e5',
+		fontSize: 20,
+		padding: 15,
+		marginLeft: 5,
+		height: 50,
+		color: 'black',	
+	},
+	amount: {
+		flex:1,
+		backgroundColor: '#e1e8e5',
+		fontSize: 20,
+		padding: 20,
+		marginRight: 5,
+		height: 70,
+		textAlign: 'right',
+		color: 'red'
+	},
+	button:{
+		width: 150,
+		marginBottom:10,
+		backgroundColor:'#179bbd',
+		borderRadius:40,
+		borderWidth: 1,
+		borderColor: '#fff',
+		alignSelf: 'center',
+	},
+	countTransaction : {
+		backgroundColor: '#e1e8e5',
+		fontSize: 16,
+		marginLeft: 5,
+		marginBottom: 5,
+		height: 20,
+		color: '#324dc7',
+		textAlign: 'center'	
+	}
 });

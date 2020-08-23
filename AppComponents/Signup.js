@@ -1,3 +1,12 @@
+/**
+ * This is a signup class used to create an account for users.
+ * In order to register successfully, user have fill up the form correctly with valid inputs.
+ * This screen have username, FirstName, LastName, Password and Email as a Text Input field.
+ * username, Password and Email are validated, therefore user need to enter these informations 
+ * in correct format.
+ * 
+ */
+
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Button, KeyboardAvoidingView,
         Image, TextInput, TouchableOpacity, ScrollView, StatusBar } from 'react-native'
@@ -23,11 +32,6 @@ export default class Signup extends Component {
             return;
         }
 
-        // if(this.state.Password.length >0 && this.state.Password.length < 6){
-        //     alert('minimum password length must be 5');
-        //     return;
-        // }
-
         let data ={
             "Username": this.state.username,
             "FirstName": this.state.FirstName,
@@ -35,9 +39,9 @@ export default class Signup extends Component {
             "Password": this.state.Password,
             "Email": this.state.Email
         };
-        console.log(data);
-        // Client Send the reequest to Server localhost:3000 as a JSON object
-        fetch('http://localhost:3000/api/signup', {
+        
+        // Client Send the request to Server https://weareexpensetracker.herokuapp.com as a JSON object
+        fetch('https://weareexpensetracker.herokuapp.com/api/signup', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -48,16 +52,25 @@ export default class Signup extends Component {
          // Client get the response from Server, upon successful the user account will be created and navigate back to login page
         .then (async (result) => {
             let responseJson = await result.json();
+<<<<<<< HEAD:AppComponents/Signup/Signup.js
             //console.log(responseJson);
+=======
+>>>>>>> e2259087b88116ac6bb66e98b1e094d0a220cd91:AppComponents/Signup.js
             
+            // Checks if the username is already taken, and client get the respone from server
             if(responseJson.error){
                 alert('Usename is already taken');
                 return;
             }
+<<<<<<< HEAD:AppComponents/Signup/Signup.js
+=======
+             // Checks if the email is already taken, and client get the respone from server
+>>>>>>> e2259087b88116ac6bb66e98b1e094d0a220cd91:AppComponents/Signup.js
             if(responseJson.emailError){
                 alert('Email already exist');
                 return;
             }
+            // If the user submit signup form correctly, then it will navigate to Login Page else it will prompt alert message.
             if(responseJson.success){
                 this.props.navigation.navigate('LoginPage');
                 return;
@@ -76,7 +89,6 @@ export default class Signup extends Component {
       };
       
       validation (text, type){
-        //let textValue = text.target.username;
         switch (type){
             case "username" : {
                 this.setState({username: text})
@@ -109,7 +121,7 @@ export default class Signup extends Component {
                         
                             <Text style={styles.heading}> Sign Up</Text>
                             
-                            <TextInput style = {styles.input} placeholder = "Username" 
+                            <TextInput style = {styles.input} placeholder = "Username min 4 characters" 
                             onChangeText={(text) => this.validation(text, 'username') }
                             returnKeyType = "next"
                             onSubmitEditing = {()=> this.firstNameInput.focus()}
@@ -129,13 +141,15 @@ export default class Signup extends Component {
                             onSubmitEditing = {()=> this.passwordInput.focus()}
                             />
                            
-                            <TextInput style = {styles.input} placeholder = "Password min. 5 characters" 
+                            <TextInput style = {styles.passwordstyle} placeholder = "Password min 5 characters" 
                             onChangeText={(text) => this.validation(text, 'Password')}
                             secureTextEntry 
                             returnKeyType = "next"
                             ref={(input) => this.passwordInput = input}
                             onSubmitEditing = {()=> this.repasswordInput.focus()}
                             />
+                            <Text style={styles.passwordText}> Password must contain at least 1 letter and number</Text>
+                            
 
                             <TextInput style = {styles.input} placeholder = "Re-type Password" 
                             onChangeText={(text) => this.validation(text, 'RetypePassword')}
@@ -152,12 +166,14 @@ export default class Signup extends Component {
                             /> 
 
                             <TouchableOpacity style = {styles.buttonContainer} onPress={this.handleSubmit}> 
-                            <Button onPress={this.handleSubmit} color = 'white' title="SUBMIT"/>
+                            <Button onPress={this.handleSubmit} color = 'white' title="SUBMIT" testID="submitButton"/>
                             </TouchableOpacity>  
                         
-                            <Button onPress={() => this.props.navigation.navigate('LoginPage')} 
+                            <Button onPress={() => this.props.navigation.navigate('LoginPage') } 
+                            id="submitButton"
                             color ='white'
-                            title="Already Registered? Login"/>
+                            title="Already Registered? Login"
+                            testID="submitButton"/>
                             {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('LoginPage')}>
                             <Text> Already Registered? Login </Text>
                             </TouchableOpacity> */}
@@ -208,6 +224,19 @@ const styles = StyleSheet.create ( {
         marginBottom: 30,
         color : 'white'
     },
+    passwordstyle:{
+        height: 40,
+        fontSize: 20,
+        backgroundColor : 'rgba(255,255,255,0.8)',
+        // marginBottom: 20,
+        padding: 8,
+    },
+    passwordText:{
+        fontSize: 13,
+        marginBottom: 10,
+        fontStyle: 'italic'
+        //color: '#109bad'
+    }
 });
 
 

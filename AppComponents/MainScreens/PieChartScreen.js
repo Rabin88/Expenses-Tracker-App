@@ -1,11 +1,19 @@
+/**
+ * This is a PieChartScreen class that displays the categories in a pie-chart with percentage.
+ * It also display total expenses in the center of the pie chart. In addition pie-chart is animated. 
+ * To create piechart VictoryPie is used which was installed from victory-native library.
+ * Similarly, for selecting date, react-native-datepicker library is used.
+ * To change the date in MongoDB format, moment library is used.
+ * 
+ */
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Button, TouchableOpacity, AsyncStorage} from 'react-native'
 import { VictoryLabel, VictoryPie, VictoryLegend } from "victory-native";
-import Svg from 'react-native-svg'
-import DatePicker from 'react-native-datepicker';
+import Svg from 'react-native-svg' 
+import DatePicker from 'react-native-datepicker'; 
 import moment from 'moment';
 
-export default class Expenses extends Component {
+export default class PieChartScreen extends Component {
 	static navigationOptions = {
 		title : 'Expense',
 		headerStyle: {backgroundColor: '#179bbd'},
@@ -14,7 +22,7 @@ export default class Expenses extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			startDate: "01-01-2019",
+			startDate: "01-04-2019",
 			FinishDate: new Date(), 
 			myKey: " ", 
 			data:[
@@ -26,8 +34,10 @@ export default class Expenses extends Component {
 		};
 
 		this.getStorageData();
+		
 	}
 
+	// Function to get stored token and userID.
 	async getStorageData() {
 		try {
 		  const user_id = await AsyncStorage.getItem('userId');
@@ -36,47 +46,16 @@ export default class Expenses extends Component {
 		  this.setState({myKey: user_id, token: jwt_token});
 
 		  this.getData();
-		  //alert(value)
 		} catch (error) {
 		  console.log("Error retrieving data" + error);
 		}
 	  }
-
-
-	componentDidMount (){  
-		// const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
-		// const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
-
-		// 	fetch('http://localhost:3000/api/categories', {
-		// 			method: 'POST',
-		// 			headers: {
-		// 				'Accept': 'application/json',
-		// 				'Content-Type': 'application/json',
-		// 			},
-		// 			body: JSON.stringify({
-		// 			start_date: sDate,
-		// 			finish_date :fDate,
-		// 			userid: this.state.myKey
-					
-					
-		// 			})
-		// 		})     
-		// .then(res => res.json())      
-		// .then(res => {        
-		// 	this.setState({          
-		// 		data: res,  // database array        
-		// 		error: res.error || null,                 
-		// 	});           
-		// })      
-		// .catch(error => {        
-		// this.setState({ error, loading: false });      
-		// });  
-	};
+	// Function to get tranascation categories data from the database.
 	getData (){  
 		const sDate = moment(this.state.startDate, "DD-MM-YYYY", true).format();
 		const fDate = moment(this.state.FinishDate, "DD-MM-YYYY", true).format();
 
-				fetch('http://localhost:3000/api/categories', {
+				fetch('https://weareexpensetracker.herokuapp.com/api/categories', {
 						method: 'POST',
 						headers: {
 								'Authorization': 'Bearer '+ this.state.token,
@@ -105,6 +84,7 @@ export default class Expenses extends Component {
 		this.setState({ error});      
 		});  
 	};
+	// Function to calculate total expense amount
 	getTotal = () => {
 	var total = this.state.data.reduce( function(accumulator, value) {
 		return accumulator + value.total;
@@ -113,14 +93,11 @@ export default class Expenses extends Component {
 		total.toFixed(2)
 		)
 	}
-
 	render() {
+
 		return (
 			<View style={styles.container}>
-				<View style={{ flexDirection:'row'}}>
-				{/* <TouchableOpacity onPress ={this.getUserID()}>  
-						<Text> </Text>  
-						</TouchableOpacity> */}
+					<View style={{ flexDirection:'row'}}>
 						<Text style={styles.dateStyle}> From </Text>
 						<Text style={styles.dateStyle}> To </Text>
 					</View>
@@ -182,6 +159,8 @@ export default class Expenses extends Component {
 					<Button onPress={() => this.getData()} color = 'white' title="Set"/>
 					</TouchableOpacity>
 
+
+				<View>
 				<Svg width={380} height={600}>
 					<VictoryPie 
 						standalone={false}
@@ -190,15 +169,14 @@ export default class Expenses extends Component {
 						x = "Categories"
 						y = "total"
 						animate={{duration: 2000}}
-						//animate={{duration: 2000, onLoad: {duration: 2000}, onEnter: {duration: 1000, before: () => ({y: 0})}}}
 						innerRadius={90}
 						padAngle={2}
 						labelRadius={100}
+<<<<<<< HEAD:AppComponents/DashboardPages/AccountGraphs/ExpensesGraph.js
 						//style={{ labels: { fill: "green", fontSize: 20}}}
+=======
+>>>>>>> e2259087b88116ac6bb66e98b1e094d0a220cd91:AppComponents/MainScreens/PieChartScreen.js
 						labels={(item) => `${item._id.Categories}:${Math.round(item.total/this.getTotal()*100)}%`}
-						// labels={(item) => `${ item._id.Categories === 'Others' && item.total=== 0 ? "" : 
-						// item._id.Categories}:${item._id.Categories === 'Others' && item.total=== 0 ? "": 
-						// Math.round(item.total/this.getTotal()*100)}%`}
 						
 					/>
 					<VictoryLabel
@@ -213,26 +191,17 @@ export default class Expenses extends Component {
 						x={190} y={200}
 						text={`-£${this.getTotal()}`}
 					/>
-					{/* <VictoryLegend x={30} y={200}
-						orientation="horizontal"
-						itemsPerRow={3}
-						gutter={20}
-						//style={{ border: { stroke: "black" } }}
-						colorScale={["tomato","orange", "gold","cyan", "#bd8cbd", "#68bab3", "#9997d1" ]}
-						//data={this.state.data}
-						_id ={(item) => `${item._id.Categories}`}
-					
-						/> */}
+
 				</Svg>
+				</View>
+			
 			</View>
 		)
 	}
 }
 const styles = StyleSheet.create({
 	container: {
-		//flex: 1,
-		//justifyContent: "center",
-		//alignItems: "center",
+		flex: 1,
 		backgroundColor: "#afdfed"
 	},
 	dateStyle: {
@@ -245,7 +214,6 @@ const styles = StyleSheet.create({
 
 	button:{
 		width: 150,
-		//marginTop:10,
 		marginBottom:10,
 		backgroundColor:'#179bbd',
 		borderRadius:40,

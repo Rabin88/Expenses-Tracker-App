@@ -1,6 +1,17 @@
 # OSX
 #
 .DS_Store
+.buckconfig
+.flowconfif
+.gitattributes
+metro.config.js
+babel.config.js
+app.json
+.vscode/
+ios/
+android/
+
+
 
 # Xcode
 #
@@ -40,6 +51,7 @@ yarn-error.log
 buck-out/
 \.buckd/
 *.keystore
+
 
 # fastlane
 #

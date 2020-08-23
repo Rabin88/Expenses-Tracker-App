@@ -1,23 +1,26 @@
+/**
+ * This is a Bills class that display the merchant name, amount and date of transaction. 
+ */
+
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, AsyncStorage} from 'react-native';
 import moment from 'moment';
 
 
-export default class Others extends Component {
+export default class Bills extends Component {
 	static navigationOptions = {
-		title:'Others',
+		title:'Bills',
 		headerStyle: {backgroundColor: '#179bbd'},
 		headerTitleStyle: {color:'white'}
 	};
+	
 	constructor(props) {
 		super(props);
-		
+
 		const { navigation } = props;
 		let uid = navigation.getParam('user_id');
 		let sDate = navigation.getParam('startDate');
 		let fDate = navigation.getParam('finishDate');
-
-		//console.log(uid, sDate, fDate);
 
 		this.state = {    
 			data: [],
@@ -26,40 +29,40 @@ export default class Others extends Component {
 			myKey: uid
 		};
 	}
-
-	 async componentDidMount (){   
-
+	 
+	async componentDidMount (){  
+		 
 		let jwt_token = "";
 		try {
 			jwt_token = await AsyncStorage.getItem('token');
 		} catch (error) {
 			console.log("Error retrieving data" + error);
-		}
-
+		} 
 		let startDate = encodeURIComponent(this.state.startDate);
 		let finishDate = encodeURIComponent(this.state.FinishDate);
-		  const url = `http://localhost:3000/api/categories/merchant?category=Others&sdate=${startDate}&fdate=${finishDate}&uid=${this.state.myKey}`;
-			console.log('token pre call: ', jwt_token);
-		    fetch(url, {
-				headers: {
-					'Authorization': 'Bearer '+ jwt_token,
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-				},
-			})      
+		const url = `https://weareexpensetracker.herokuapp.com/api/categories/merchant?category=Bills&sdate=${startDate}&fdate=${finishDate}&uid=${this.state.myKey}`;
+		  this.setState({ loading: true });
+				
+		  fetch(url, {
+			headers: {
+				'Authorization': 'Bearer '+ jwt_token,
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+		})      
 		      .then(res => res.json())      
 		      .then(res => {        
 		        this.setState({          
 		          data: res,  // database array        
 		          error: res.error || null,                 
 		        });        
-		    })      
+		     })      
 		     .catch(error => {        
 		       this.setState({ error});      
-		    });  
-		};
+		     });  
+		  };
 
-		renderItem=({item}) => { 
+		  renderItem=({item}) => { 
 			return(
 				<View>
 					<View style={{flex:1}}>
@@ -69,13 +72,6 @@ export default class Others extends Component {
 						<Text style={styles.merchant} >  {item._id.Merchant} </Text>
 						<Text style={styles.creditAmount} > - £{item.total.toFixed(2)} </Text>
 					</View>
-				</View>
-			)
-		}
-		renderSeparator = () => {
-			return (
-				<View style = {{ width: '100%', borderWidth:0.2}}>
-	
 				</View>
 			)
 		}
@@ -90,7 +86,6 @@ export default class Others extends Component {
 						data={this.state.data}   
 						renderItem={this.renderItem} 
 						keyExtractor={(item,index)=> index.toString()} 
-						ItemSeparatorComponent ={this.renderSeparator}
 					/>
 	
 				</View>
@@ -101,8 +96,6 @@ export default class Others extends Component {
 	const styles = StyleSheet.create({
 		container: {
 			flex: 1,
-			//justifyContent: 'center',
-			//alignItems: 'center',
 			backgroundColor: '#afdfed',	
 		},
 		heading: {
@@ -140,6 +133,5 @@ export default class Others extends Component {
 			padding: 5,
 			height: 25,
 			color: '#324dc7',
-			//textAlign: 'center'	
 		}
 	});

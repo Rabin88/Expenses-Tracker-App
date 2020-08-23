@@ -1,3 +1,9 @@
+/**
+ * This is a login class used for login into the system.
+ * To login user need to enter valid username and password 
+ * otherwise it will prompt alert message.
+ * 
+ */
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -25,19 +31,19 @@ export default class Login extends Component {
         }
     }
 
-    //loginCheck 
+    //loginCheck function
         handleSubmit = (event) => {
         event.preventDefault();
 		const uname = this.state.username;
         const pwd = this.state.password;
 
-
+        // check if username or password match. If not, it will prompt alert message with '"Username/Password mismatch".
 		if(uname == '' || pwd == ''){
 			alert('Username/Password mismatch')
 			return;
         }
-
-        fetch('http://localhost:3000/api/login', {
+        // Client Send the request to Server https://weareexpensetracker.herokuapp.com as a JSON object
+        fetch('https://weareexpensetracker.herokuapp.com/api/login', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -56,11 +62,14 @@ export default class Login extends Component {
 				alert('Username/Password invalid!')
 				return;
 			}
-
+            // store received token from server in local storage
             await AsyncStorage.setItem('token', resJson.token);
-            console.log(resJson.token)
+            // store received userID from server in local storage
             await AsyncStorage.setItem('userId', resJson._id);
+<<<<<<< HEAD:AppComponents/Login/Login.js
             console.log(resJson._id)
+=======
+>>>>>>> e2259087b88116ac6bb66e98b1e094d0a220cd91:AppComponents/Login.js
             this.props.navigation.navigate('BankPage');
         })
         .catch(error => {

@@ -1,8 +1,17 @@
+/**
+ * This is a DashboardScreen class that displays the user's total balance, monthly income and expenses.
+ * 
+ */
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Image, FlatList, TouchableOpacity, AsyncStorage} from 'react-native';
+import { StyleSheet, Text, View, Button, Image, FlatList, TouchableOpacity, AsyncStorage, ScrollView} from 'react-native';
 import moment from 'moment';
 
+<<<<<<< HEAD:AppComponents/Homepage/Dashboard.js
 export default class Dashboard extends Component {
+=======
+
+export default class DashboardScreen extends Component {
+>>>>>>> e2259087b88116ac6bb66e98b1e094d0a220cd91:AppComponents/MainScreens/DashboardScreen.js
 	static navigationOptions = {
 		title:'Dashboard',
 		headerStyle: {backgroundColor: '#179bbd'},
@@ -12,7 +21,7 @@ export default class Dashboard extends Component {
 		super(props);
 		this.state = {    
 			data: [],
-			totalBalance:0,      
+			totalBalance:'',      
 			error: null,
 			myKey: '',
 			token: '', 
@@ -20,6 +29,7 @@ export default class Dashboard extends Component {
 		this.getStorageData();
 	}
 
+	// Function to get stored token and userID.
 	async getStorageData() {
 		try {
 		  const user_id = await AsyncStorage.getItem('userId');
@@ -33,11 +43,15 @@ export default class Dashboard extends Component {
 		  "Error retrieving data" + error;
 		}
 	  }
+<<<<<<< HEAD:AppComponents/Homepage/Dashboard.js
 
+=======
+	  	// Function to get totalbalance amount from the database
+>>>>>>> e2259087b88116ac6bb66e98b1e094d0a220cd91:AppComponents/MainScreens/DashboardScreen.js
 		 getData(){  
 		 let user_id = this.state.myKey;
 			  
-		 fetch(`http://localhost:3000/api/totalbalance?user_id=${user_id}`, {
+		 fetch(`https://weareexpensetracker.herokuapp.com/api/totalbalance?user_id=${user_id}`, {
 			method: 'GET',
 			headers: {
 				 'Authorization': 'Bearer '+ this.state.token,
@@ -51,13 +65,14 @@ export default class Dashboard extends Component {
 			
 			this.setState({          
 				totalBalance: resJson[0],  // database array       
-				//error: resJson.error || null,                 
+				                 
 			  });        
 		   })      
 		   .catch(error => {        
 			 this.setState({ error});      
 		   }); 
 		}
+<<<<<<< HEAD:AppComponents/Homepage/Dashboard.js
 
 		//   const url = `http://localhost:3000/api/balance`;
 				
@@ -82,6 +97,9 @@ export default class Dashboard extends Component {
 		//      });  
 		//   };
 		
+=======
+		// Function to get monthly expense and income amount from the database
+>>>>>>> e2259087b88116ac6bb66e98b1e094d0a220cd91:AppComponents/MainScreens/DashboardScreen.js
 		 getExpensesData (){  
 			var dateObj = new Date();
 			var month = dateObj.getUTCMonth() + 1; //months from 1-12
@@ -98,7 +116,7 @@ export default class Dashboard extends Component {
 			//console.log(sDate, fDate);
 	
 	
-			fetch('http://localhost:3000/api/expenses', {
+			fetch('https://weareexpensetracker.herokuapp.com/api/expenses', {
 				method: 'POST',
 				headers: {
 					'Authorization': 'Bearer '+ this.state.token,
@@ -119,22 +137,21 @@ export default class Dashboard extends Component {
 					data: result  // database array                        
 				  });        
 			   }) 
+<<<<<<< HEAD:AppComponents/Homepage/Dashboard.js
 			// 	.then(res => res.json())      
 		    //   	.then(res => {        
 		    //     this.setState({          
 		    //       data: res,  // database array                
 		    //     });        
 		    //  })      
+=======
+     
+>>>>>>> e2259087b88116ac6bb66e98b1e094d0a220cd91:AppComponents/MainScreens/DashboardScreen.js
 		     .catch(error => {        
 		       this.setState({ error});      
 		     }) 
 		}
-	// renderBalance = ({item}) => {
-	// 	return (
-	// 		<Text style={styles.balance}> Balance  £{item.balance} </Text>
-	// 	)
-	// }
-
+	// This function will display items in a list view.
 	renderItem=({item}) => { 
 		return(
 			<View>
@@ -159,16 +176,22 @@ export default class Dashboard extends Component {
 	}
 	 
 	render() {
-		let currentbalance = this.state.totalBalance.balance
+		let currentbalance = parseFloat(this.state.totalBalance.balance)
 		return (
+			
 			<View style={styles.container}>
+				<ScrollView>
 				<View>
 				<Image  style = {{ width: 200, height: 200, alignSelf: 'center', marginTop: 30, marginBottom:10, }}
 					source={require('/Users/rabinpun/Desktop/FinanceFinal/assets/logo.png')}
 					/>
 				
 				<View >
+<<<<<<< HEAD:AppComponents/Homepage/Dashboard.js
 				<Text style={styles.balance}> Balance   £{currentbalance} </Text>
+=======
+				<Text style={styles.balance}> Balance   £{currentbalance.toFixed(2)} </Text>
+>>>>>>> e2259087b88116ac6bb66e98b1e094d0a220cd91:AppComponents/MainScreens/DashboardScreen.js
 				<Text style={styles.budgetDetails}>  {moment(this.sDate).format("MMMM")} Budget Details </Text>
 				{/* <Text style={styles.balance}> Balance   £{ this.renderBalance()} </Text> */}
 				</View>
@@ -183,7 +206,9 @@ export default class Dashboard extends Component {
 				<Button onPress={() => this.props.navigation.navigate('CategoriesPage')} color = 'white' title="View Transactions"/>
 				</TouchableOpacity> 
 				</View>
+				</ScrollView>
 			</View>
+			
 		)
 	}
 }
